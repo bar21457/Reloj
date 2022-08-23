@@ -44,6 +44,20 @@ PROCESSOR 16F887
 ; Variables    
 ;******************************************************************************* 
 PSECT udata_bank0
+W_TEMP:
+    DS 1
+STAT_TEMP:
+    DS 1
+CONT_10MS:
+    DS 1
+DISP:
+    DS 1
+SEGS:
+    DS 1
+NL_SEGS:
+    DS 1
+NH_SEGS:
+    DS 1
 
 ;******************************************************************************* 
 ; Vector Reset    
@@ -64,7 +78,13 @@ PUSH:
     movwf STAT_TEMP     ; Se carga el valor de W a STAT_TEMP
     
 ISR:
-
+    btfss INTCON, 2	; Revisa el bit 2 de INTCON, si vale 1 se salta el GOTO
+    goto POP
+    bcf INTCON, 2	; Baja la bandera que indica una interrupción en 
+                        ; el TMR0
+    movlw 100           ; Cargamos 100 a W
+    movwf TMR0		; Se carga W a TMR0 (se carga al valor de N en  el TMR0)
+    incf CONT_10MS, F   ; Se incrementa el valor de CONT_10MS
    
 POP:
     swapf STAT_TEMP, W  ; Se intercambian el nibble más significativo y el
@@ -89,65 +109,130 @@ MAIN:
     
     BANKSEL OSCCON
     
-    BSF OSCCON, 6	; IRCF2 Selección de 2MHz
-    BCF OSCCON, 5	; IRCF1
-    BSF OSCCON, 4	; IRCF0
+    bcf OSCCON, 6	; IRCF2 Selección de 250KHz
+    bsf OSCCON, 5	; IRCF1
+    bcf OSCCON, 4	; IRCF0
     
-    BSF OSCCON, 0	; SCS Reloj Interno
+    bsf OSCCON, 0	; SCS Reloj Interno
     
     BANKSEL TRISA
     
-    CLRF TRISA
-    CLRF TRISC
-    CLRF TRISD		; Se configuran los puertos A, C y D como outputs
+    clrf TRISA
+    clrf TRISC
+    clrf TRISD		; Se configuran los puertos A, C y D como outputs
     
-    BSF TRISB, 0
-    BSF TRISB, 1	
-    BSF TRISB, 2        ; Se configuran RB0, RB1 y RB2 como inputs
+    bsf TRISB, 0
+    bsf TRISB, 1	
+    bsf TRISB, 2        ; Se configuran RB0, RB1 y RB2 como inputs
     
     BANKSEL IOCB
     
-    BSF IOCB, 0
-    BSF IOCB, 1
-    BSF IOCB, 2		; Habilitando RB0, RB1 y RB2 para las ISR de RBIE
+    bsf IOCB, 0
+    bsf IOCB, 1
+    bsf IOCB, 2		; Habilitando RB0, RB1 y RB2 para las ISR de RBIE
     
     BANKSEL WPUB
     
-    BSF WPUB, 0
-    BSF WPUB, 1
-    BSF WPUB, 2		; Habilitando los pull-ups en RB0, RB1 y RB2
+    bsf WPUB, 0
+    bsf WPUB, 1
+    bsf WPUB, 2		; Habilitando los pull-ups en RB0, RB1 y RB2
     
     BANKSEL ANSEL
-    
-    CLRF ANSEL          
-    CLRF ANSELH         ; I/O Digitales
+    clrf ANSEL          
+    clrf ANSELH         ; I/O Digitales
     
     BANKSEL PORTC
-    CLRF PORTA		; Se limpia PORTA
-    CLRF PORTC          ; Se limpia PORTC
-    CLRF PORTD          ; Se limpia PORTD
+    clrf PORTA		; Se limpia PORTA
+    clrf PORTC          ; Se limpia PORTC
+    clrf PORTD          ; Se limpia PORTD
+    
+    clrf CONT_10MS
     
     BANKSEL OPTION_REG
-    BCF OPTION_REG, 7	; Habilitando que el PORTB tenga pull-ups
+    bcf OPTION_REG, 7	; Habilitando que el PORTB tenga pull-ups
     
     ; Configuración TMR0
     
-    BCF OPTION_REG, 5	; T0CS: FOSC/4 como reloj (modo temporizador)
-    BCF OPTION_REG, 3	; PSA: Se asigna el Prescaler al TMR0
+    bcf OPTION_REG, 5	; T0CS: FOSC/4 como reloj (modo temporizador)
+    bcf OPTION_REG, 3	; PSA: Se asigna el Prescaler al TMR0
     
-    BSF OPTION_REG, 2
-    BSF OPTION_REG, 1
-    BCF OPTION_REG, 0	; PS2-0: Prescaler 1:128 
+    bcf OPTION_REG, 2
+    bcf OPTION_REG, 1
+    bsf OPTION_REG, 0	; PS2-0: Prescaler 1:4 
     
-    MOVLW 178           ; Cargamos 178 a W
+    MOVLW 100           ; Cargamos 100 a W
     MOVWF TMR0		; Se carga W a TMR0 (se carga al valor de N en  el TMR0)
+    
+    ; Configuración de interrupciones
+    
+    bsf INTCON, 7       ; Habilitamos las interrupciones globales (GIE)
+    bsf INTCON, 5       ; Habilitamos la interrupción del TMR0 (T0IE)
+    bsf INTCON, 3       ; Habilitamos la interrupción del PORTB (RBIF)
+    bcf INTCON, 0       ; Baja la bandera que indica una interrupción en
+                        ; el PORTB
 
 ;******************************************************************************* 
 ; Loop   
 ;*******************************************************************************     
     
 LOOP:
+    incf SEGS, F	; Se incrementa el valor de SEGS
+    movf SEGS, W	; Copia el valor de SEGS a W
+    movwf NL_SEGS	; Se carga W a NL_SEGS
+    movwf NH_SEGS	; Se carga W a NL_SEGS
+    movlw 0x09		; Cargamos 9 a W		
+    andwf NL_SEGS, F	; AND entre NL y W
+    movlw 0x05          ; Cargamos 5 a W
+    andwf NH_SEGS, F	; AND entre NH y W
+    swapf NH_SEGS, F	; Se intercambian el nibble más significativo y el
+                        ; nibble menos significativo de NH y se carga en F
+    btfss DISP0, 0      ; Revisa el bit 0 de DIS0; si vale 1, se salta el 
+                        ; goto
+    goto DISP0
+    goto DISP1
     
+DISP0:
+    movf NL_SEGS, W	; Copia el valor de NL_SEGS a W
+    PAGESEL TABLA
+    call TABLA
+    PAGESEL DISP0
+    movwf PORTD		; Se carga W a PORTD
+    bsf DISP, 0		; Seteamos a 1 el bit 0 de DISP
+    goto VERIFICACION
+    
+DISP1:
+    movf NH_SEGS, W	; Copia el valor de NH_SEGS a W
+    PAGESEL TABLA
+    call TABLA
+    PAGESEL DISP1
+    movwf PORTD		; Se carga W a PORTD
+    bcf DISP, 0		; Seteamos a 0 el bit 0 de DISP
+    goto VERIFICACION
+    
+VERIFICACION:    
+    movf CONT_10MS, W	; Copia el valor de CONT_10MS a W
+    sublw 10
+    btfss STATUS, 2	; Revisa el bit 2 de STATUS, si vale 1 se salta el goto
+			; (si la resta fue igual a 0, se salta el GOTO)
+    goto VERIFICACION
+    clrf CONT_10MS	; Limpiamos CONT_10MS
+    goto LOOP		
+    
+PSECT CODE, ABS, DELTA=2
+ ORG 0x1800
+ 
+ TABLA:
+    addwf PCL, F
+    retlw 0b00111111	; 0
+    retlw 0b00000110	; 1
+    retlw 0b01011011	; 2
+    retlw 0b01001111	; 3
+    retlw 0b01100110	; 4
+    retlw 0b01101101	; 5
+    retlw 0b01111101	; 6
+    retlw 0b00000111	; 7
+    retlw 0b01111111	; 8
+    retlw 0b01101111	; 9
     
 ;******************************************************************************* 
 ; Fin de Código    
