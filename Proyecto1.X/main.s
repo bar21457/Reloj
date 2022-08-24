@@ -160,8 +160,8 @@ MAIN:
     bcf OPTION_REG, 1
     bsf OPTION_REG, 0	; PS2-0: Prescaler 1:4 
     
-    MOVLW 100           ; Cargamos 100 a W
-    MOVWF TMR0		; Se carga W a TMR0 (se carga al valor de N en  el TMR0)
+    movlw 100           ; Cargamos 100 a W
+    movwf TMR0		; Se carga W a TMR0 (se carga al valor de N en  el TMR0)
     
     ; Configuración de interrupciones
     
