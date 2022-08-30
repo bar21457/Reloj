@@ -2495,17 +2495,13 @@ ENDM
 PSECT udata_bank0
 W_TEMP:
     DS 1
-STAT_TEMP:
-    DS 1
-CONT_10MS:
+STATUS_TEMP:
     DS 1
 DISP:
     DS 1
-SEGS:
+U_SEG:
     DS 1
-NL_SEGS:
-    DS 1
-NH_SEGS:
+D_SEG:
     DS 1
 
 ;*******************************************************************************
@@ -2524,19 +2520,39 @@ PUSH:
     swapf STATUS, W ; Se intercambian el nibble más significativo y el
                         ; nibble menos significativo de STATUS y se carga
    ; en W
-    movwf STAT_TEMP ; Se carga el valor de W a STAT_TEMP
+    movwf STATUS_TEMP ; Se carga el valor de W a STAT_TEMP
 
-ISR:
-    btfss INTCON, 2 ; Revisa el bit 2 de INTCON, si vale 1 se salta el GOTO
+ISR_TMR1:
+    btfss PIR1, 0 ; Revisa el bit 0 de PIR1, si vale 1 se salta el GOTO
     goto POP
-    bcf INTCON, 2 ; Baja la bandera que indica una interrupción en
-                        ; el TMR0
-    movlw 100 ; Cargamos 100 a W
-    movwf TMR0 ; Se carga W a TMR0 (se carga al valor de N en el TMR0)
-    incf CONT_10MS, F ; Se incrementa el valor de CONT_10MS
+    bcf PIR1, 0 ; Baja la bandera que indica una interrupción en
+                        ; el TMR1
+    movlw 0xEE ; Cargamos 0xEE a W
+    movwf TMR1L ; Cargamos W a TMR1L
+    movlw 0x85 ; Cargamos 0x85 a W
+    movwf TMR1H ; Cargamos W a TMR1H
+    goto INC_U_SEG
+
+INC_U_SEG:
+    incf U_SEG, F
+    movf U_SEG, W
+    sublw 10
+    btfss STATUS, 2
+    goto LOOP
+    clrf U_SEG
+    goto INC_D_SEG
+
+INC_D_SEG:
+    incf D_SEG, F
+    movf D_SEG, W
+    sublw 6
+    btfss STATUS, 2
+    goto LOOP
+    clrf D_SEG
+    goto POP
 
 POP:
-    swapf STAT_TEMP, W ; Se intercambian el nibble más significativo y el
+    swapf STATUS_TEMP, W ; Se intercambian el nibble más significativo y el
                         ; nibble menos significativo de STAT_TEMP y se carga
    ; en W
     movwf STATUS ; Se carga el valor de W a STATUS
@@ -2558,7 +2574,9 @@ MAIN:
 
     BANKSEL OSCCON
 
-    bcf OSCCON, 6 ; ((OSCCON) and 07Fh), 6 Selección de 250KHz
+    ; Selección de 4MHz
+
+    bsf OSCCON, 6 ; ((OSCCON) and 07Fh), 6
     bsf OSCCON, 5 ; ((OSCCON) and 07Fh), 5
     bcf OSCCON, 4 ; ((OSCCON) and 07Fh), 4
 
@@ -2587,38 +2605,59 @@ MAIN:
     bsf WPUB, 2 ; Habilitando los pull-ups en ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1 y ((PORTB) and 07Fh), 2
 
     BANKSEL ANSEL
+
     clrf ANSEL
     clrf ANSELH ; I/O Digitales
 
     BANKSEL PORTC
+
     clrf PORTA ; Se limpia PORTA
     clrf PORTC ; Se limpia PORTC
     clrf PORTD ; Se limpia PORTD
 
-    clrf CONT_10MS
+    clrf U_SEG
+    clrf D_SEG
 
     BANKSEL OPTION_REG
+
     bcf OPTION_REG, 7 ; Habilitando que el PORTB tenga pull-ups
 
-    ; Configuración TMR0
+    ; Configuración TMR1
 
-    bcf OPTION_REG, 5 ; ((OPTION_REG) and 07Fh), 5: FOSC/4 como reloj (modo temporizador)
-    bcf OPTION_REG, 3 ; ((OPTION_REG) and 07Fh), 3: Se asigna el Prescaler al TMR0
+    BANKSEL T1CON
 
-    bcf OPTION_REG, 2
-    bcf OPTION_REG, 1
-    bsf OPTION_REG, 0 ; ((OPTION_REG) and 07Fh), 2 -0: Prescaler 1:4
+    bsf T1CON, 0 ; Habilitamos el TMR1
+    bcf T1CON, 1 ; Selección del Reloj Interno
 
-    movlw 100 ; Cargamos 100 a W
-    movwf TMR0 ; Se carga W a TMR0 (se carga al valor de N en el TMR0)
+    ; Selección del Prescaler en 1:8
+
+    bcf T1CON, 4
+    bsf T1CON, 5
+
+    ; Cargamos el valor de N = 34286 = 0x85EE (Desborde de 1s)
+
+    BANKSEL TMR1L
+
+    movlw 0xEE
+    movwf TMR1L
+    movlw 0x85
+    movwf TMR1H
 
     ; Configuración de interrupciones
 
+    BANKSEL INTCON
+
     bsf INTCON, 7 ; Habilitamos las interrupciones globales (((INTCON) and 07Fh), 7)
-    bsf INTCON, 5 ; Habilitamos la interrupción del TMR0 (((INTCON) and 07Fh), 5)
+    bsf INTCON, 6 ; Habilitamos la interrupción del ((INTCON) and 07Fh), 6
     bsf INTCON, 3 ; Habilitamos la interrupción del PORTB (((INTCON) and 07Fh), 0)
     bcf INTCON, 0 ; Baja la bandera que indica una interrupción en
                         ; el PORTB
+
+    BANKSEL PIE1
+
+    bsf PIE1, 0 ; Habilitamos la interrupción del TMR1
+    bcf PIR1, 0 ; Baja la bandera que indica una interrupción en
+   ; el TMR1
 
 ;*******************************************************************************
 ; Loop
@@ -2626,45 +2665,22 @@ MAIN:
 
 LOOP:
 
-    incf U_SEG, F
-    movf U_SEG, W
-    sublw 10
-    btfss STATUS, 2
-    goto LOOP
-    clrf U_SEG
-
-    incf D_SEG, F
-    movf D_SEG, W
-    sublw 6
-    btfss STATUS, 2
-    goto LOOP
-    clrf D_SEG
-
 DISP0:
-    movf U_SEG, W ; Copia el valor de NL_SEGS a W
+    movf U_SEG, W ; Copia el valor de U_SEG a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP0
     movwf PORTD ; Se carga W a PORTD
     bsf DISP, 0 ; Seteamos a 1 el bit 0 de DISP
-    goto VERIFICACION
 
 DISP1:
-    movf D_SEG, W ; Copia el valor de NH_SEGS a W
+    movf D_SEG, W ; Copia el valor de D_SEG a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP1
     movwf PORTD ; Se carga W a PORTD
     bcf DISP, 0 ; Seteamos a 0 el bit 0 de DISP
-    goto VERIFICACION
 
-VERIFICACION:
-    movf CONT_10MS, W ; Copia el valor de CONT_10MS a W
-    sublw 10
-    btfss STATUS, 2 ; Revisa el bit 2 de STATUS, si vale 1 se salta el goto
-   ; (si la resta fue igual a 0, se salta el GOTO)
-    goto VERIFICACION
-    clrf CONT_10MS ; Limpiamos CONT_10MS
     goto LOOP
 
 PSECT CODE, ABS, DELTA=2
