@@ -2670,8 +2670,7 @@ DISP0:
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP0
-    movwf PORTD ; Se carga W a PORTD
-    bsf DISP, 0 ; Seteamos a 1 el bit 0 de DISP
+    movwf PORTC ; Se carga W a PORTC
 
 DISP1:
     movf D_SEG, W ; Copia el valor de D_SEG a W
@@ -2679,7 +2678,6 @@ DISP1:
     call TABLA
     PAGESEL DISP1
     movwf PORTD ; Se carga W a PORTD
-    bcf DISP, 0 ; Seteamos a 0 el bit 0 de DISP
 
     goto LOOP
 
