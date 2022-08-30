@@ -52,11 +52,9 @@ CONT_10MS:
     DS 1
 DISP:
     DS 1
-SEGS:
+U_SEG:
     DS 1
-NL_SEGS:
-    DS 1
-NH_SEGS:
+D_SEG:
     DS 1
 
 ;******************************************************************************* 
@@ -147,6 +145,8 @@ MAIN:
     clrf PORTD          ; Se limpia PORTD
     
     clrf CONT_10MS
+    clrf U_SEG
+    clrf D_SEG
     
     BANKSEL OPTION_REG
     bcf OPTION_REG, 7	; Habilitando que el PORTB tenga pull-ups
@@ -192,7 +192,7 @@ LOOP:
     clrf D_SEG
     
 DISP0:
-    movf U_SEG, W	; Copia el valor de NL_SEGS a W
+    movf U_SEG, W	; Copia el valor de U_SEG a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP0
@@ -201,7 +201,7 @@ DISP0:
     goto VERIFICACION
     
 DISP1:
-    movf D_SEG, W	; Copia el valor de NH_SEGS a W
+    movf D_SEG, W	; Copia el valor de D_SEG a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP1
