@@ -182,7 +182,7 @@ MAIN:
     
     ; Selección del Prescaler en 1:8
     
-    bcf T1CON, 4
+    bsf T1CON, 4
     bsf T1CON, 5
     
     ; Cargamos el valor de N = 34286 = 0x85EE (Desborde de 1s)
