@@ -176,23 +176,23 @@ MAIN:
 ;*******************************************************************************     
     
 LOOP:
-    incf SEGS, F	; Se incrementa el valor de SEGS
-    movf SEGS, W	; Copia el valor de SEGS a W
-    movwf NL_SEGS	; Se carga W a NL_SEGS
-    movwf NH_SEGS	; Se carga W a NL_SEGS
-    movlw 0x09		; Cargamos 9 a W		
-    andwf NL_SEGS, F	; AND entre NL y W
-    movlw 0x05          ; Cargamos 5 a W
-    andwf NH_SEGS, F	; AND entre NH y W
-    swapf NH_SEGS, F	; Se intercambian el nibble más significativo y el
-                        ; nibble menos significativo de NH y se carga en F
-    btfss DISP0, 0      ; Revisa el bit 0 de DIS0; si vale 1, se salta el 
-                        ; goto
-    goto DISP0
-    goto DISP1
+    
+    incf U_SEG, F
+    movf U_SEG, W
+    sublw 10
+    btfss STATUS, 2
+    goto LOOP
+    clrf U_SEG
+    
+    incf D_SEG, F
+    movf D_SEG, W
+    sublw 6
+    btfss STATUS, 2
+    goto LOOP
+    clrf D_SEG
     
 DISP0:
-    movf NL_SEGS, W	; Copia el valor de NL_SEGS a W
+    movf U_SEG, W	; Copia el valor de NL_SEGS a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP0
@@ -201,7 +201,7 @@ DISP0:
     goto VERIFICACION
     
 DISP1:
-    movf NH_SEGS, W	; Copia el valor de NH_SEGS a W
+    movf D_SEG, W	; Copia el valor de NH_SEGS a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP1
