@@ -2538,7 +2538,7 @@ INC_U_SEG:
     movf U_SEG, W
     sublw 10
     btfss STATUS, 2
-    goto LOOP
+    goto POP
     clrf U_SEG
     goto INC_D_SEG
 
@@ -2547,7 +2547,7 @@ INC_D_SEG:
     movf D_SEG, W
     sublw 6
     btfss STATUS, 2
-    goto LOOP
+    goto POP
     clrf D_SEG
     goto POP
 
@@ -2574,10 +2574,10 @@ MAIN:
 
     BANKSEL OSCCON
 
-    ; Selección de 4MHz
+    ; Selección de 1MHz
 
     bsf OSCCON, 6 ; ((OSCCON) and 07Fh), 6
-    bsf OSCCON, 5 ; ((OSCCON) and 07Fh), 5
+    bcf OSCCON, 5 ; ((OSCCON) and 07Fh), 5
     bcf OSCCON, 4 ; ((OSCCON) and 07Fh), 4
 
     bsf OSCCON, 0 ; ((OSCCON) and 07Fh), 0 Reloj Interno
@@ -2656,6 +2656,9 @@ MAIN:
     BANKSEL PIE1
 
     bsf PIE1, 0 ; Habilitamos la interrupción del TMR1
+
+    BANKSEL PIR1
+
     bcf PIR1, 0 ; Baja la bandera que indica una interrupción en
    ; el TMR1
 
