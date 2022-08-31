@@ -54,6 +54,10 @@ U_SEG:
     DS 1
 D_SEG:
     DS 1
+U_MIN:
+    DS 1
+D_MIN:
+    DS 1
 
 ;******************************************************************************* 
 ; Vector Reset    
@@ -102,6 +106,24 @@ INC_D_SEG:
     btfss STATUS, 2
     goto POP
     clrf D_SEG
+    goto INC_U_MIN
+
+INC_U_MIN:
+    incf U_MIN, F
+    movf U_MIN, W
+    sublw 10
+    btfss STATUS, 2
+    goto POP
+    clrf U_MIN
+    goto INC_D_MIN
+
+INC_D_MIN:
+    incf D_MIN, F
+    movf D_MIN, W
+    sublw 6
+    btfss STATUS, 2
+    goto POP
+    clrf D_MIN
     goto POP
    
 POP:
@@ -222,14 +244,14 @@ MAIN:
 LOOP:
     
 DISP0:
-    movf U_SEG, W	; Copia el valor de U_SEG a W
+    movf U_MIN, W	; Copia el valor de U_MIN a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP0
     movwf PORTC		; Se carga W a PORTC
     
 DISP1:
-    movf D_SEG, W	; Copia el valor de D_SEG a W
+    movf D_MIN, W	; Copia el valor de D_MIN a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP1
