@@ -11,7 +11,7 @@
 PROCESSOR 16F887
 #include <xc.inc>
 ;******************************************************************************* 
-; Palabra de configuración    
+; Palabra de configuración
 ;******************************************************************************* 
 ; CONFIG1
   CONFIG  FOSC = INTRC_NOCLKOUT ; Oscillator Selection bits (INTOSCIO 
@@ -58,6 +58,8 @@ U_MIN:
     DS 1
 D_MIN:
     DS 1
+CONT_10MS:
+    DS 1
 
 ;******************************************************************************* 
 ; Vector Reset    
@@ -79,8 +81,20 @@ PUSH:
 			; en W
     movwf STATUS_TEMP   ; Se carga el valor de W a STAT_TEMP
     
+ISR_TMR0:
+    btfss INTCON, 2	; Revisa la bandera de interrupción de TMR0, si vale 1, 
+                        ; se salta el goto POP
+    goto POP
+    bcf INTCON, 2	; Baja la bandera que indica una interrupción en 
+                        ; el TMR0
+    movlw 100		; Cargamos 100 a W
+    movwf TMR0		; Cargamos W a TMR0
+    incf CONT_10MS, F	; Incrementamos en 1 el valor de CONT_10MS
+    goto ISR_TMR1
+    
 ISR_TMR1:
-    btfss PIR1, 0	; Revisa el bit 0 de PIR1, si vale 1 se salta el GOTO
+    btfss PIR1, 0	; Revisa la bandera de interrupción de TMR1, si vale 1, 
+                        ; se salta el goto POP
     goto POP
     bcf PIR1, 0		; Baja la bandera que indica una interrupción en 
                         ; el TMR1
@@ -151,6 +165,8 @@ PSECT CODE, delta=2, abs
 
 MAIN:
     
+    ; Configuración del oscilador interno
+    
     BANKSEL OSCCON
     
     ; Selección de 1MHz
@@ -160,6 +176,8 @@ MAIN:
     bcf OSCCON, 4	; IRCF0
     
     bsf OSCCON, 0	; SCS Reloj Interno
+    
+    ; Configuración de puertos
     
     BANKSEL ANSEL
     
@@ -190,6 +208,9 @@ MAIN:
     
     clrf U_SEG
     clrf D_SEG
+    clrf U_MIN
+    clrf D_MIN
+    clrf DISP
     
     BANKSEL OPTION_REG
     
@@ -201,7 +222,10 @@ MAIN:
     
     bsf INTCON, 7       ; Habilitamos las interrupciones globales (GIE)
     bsf INTCON, 6       ; Habilitamos la interrupción del PEIE
+    bsf INTCON, 5	; Habilitamos la interrupción del T0IE
     bsf INTCON, 3       ; Habilitamos la interrupción del PORTB (RBIF)
+    bcf INTCON, 2	; Baja la bandera que indica una interrupción en
+			; el TMR0
     bcf INTCON, 0       ; Baja la bandera que indica una interrupción en
                         ; el PORTB
 
@@ -220,14 +244,34 @@ MAIN:
     bsf IOCB, 1
     bsf IOCB, 2		; Habilitando RB0, RB1 y RB2 para las ISR de RBIE
     
-    ; Configuración TMR1
+    ; Configuración del TMR0
+    
+    BANKSEL OPTION_REG
+    
+    bcf OPTION_REG, 5	; T0CS; FOSC/4 como reloj (modo temporizador)
+    bcf OPTION_REG, 3	; PSA: asignamos el prescaler al TMR0
+    
+    ; PS2-0: Selección del prescaler en 1:16
+    
+    bsf OPTION_REG, 0
+    bsf OPTION_REG, 1
+    bcf OPTION_REG, 2
+    
+    ; Cargamos el valor de N = 100 (Desborde de 10ms)
+    
+    BANKSEL TMR0
+    
+    movlw 100
+    movwf TMR0
+    
+    ; Configuración del TMR1
     
     BANKSEL T1CON
     
     bsf T1CON, 0	; Habilitamos el TMR1
     bcf T1CON, 1	; Selección del Reloj Interno
     
-    ; Selección del Prescaler en 1:8
+    ; Selección del prescaler en 1:8
     
     bsf T1CON, 4
     bsf T1CON, 5
@@ -247,20 +291,38 @@ MAIN:
     
 LOOP:
     
+    btfss DISP, 0
+    goto DISP0
+    goto DISP1
+    
 DISP0:
-    movf U_MIN, W	; Copia el valor de U_MIN a W
+    bsf TRISC, 0	; Encendemos DISP0
+    bcf TRISC, 1	; Apagamos DISP1
+    movf U_SEG, W	; Copia el valor de U_MIN a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP0
-    movwf PORTC		; Se carga W a PORTC
+    movwf PORTD		; Se carga W a PORTD
+    bsf DISP, 0
+    goto VERIFICACION
     
 DISP1:
-    movf D_MIN, W	; Copia el valor de D_MIN a W
+    bcf TRISC, 0	; Apagamos DISP0
+    bsf TRISC, 1	; Encendemos DISP1
+    movf D_SEG, W	; Copia el valor de D_MIN a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP1
     movwf PORTD		; Se carga W a PORTD
+    bcf DISP, 0
+    goto VERIFICACION
     
+VERIFICACION:
+    movf CONT_10MS, W	; Copia el valor de CONT_10MS a W
+    sublw 10		; Restamos "10 - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
+			; goto VERIFICACION
+    clrf CONT_10MS	; Limpiamos CONT_10MS
     goto LOOP
     
 PSECT CODE, ABS, DELTA=2
