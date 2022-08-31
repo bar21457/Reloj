@@ -2540,39 +2540,43 @@ ISR_TMR1:
     goto INC_U_SEG
 
 INC_U_SEG:
-    incf U_SEG, F
-    movf U_SEG, W
-    sublw 10
-    btfss STATUS, 2
+    incf U_SEG, F ; Incrementamos en 1 el valor de U_SEG
+    movf U_SEG, W ; Movemos el valor de U_SEG a W
+    sublw 10 ; Restamos "10 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto POP
     goto POP
-    clrf U_SEG
+    clrf U_SEG ; Limpiamos U_SEG
     goto INC_D_SEG
 
 INC_D_SEG:
-    incf D_SEG, F
-    movf D_SEG, W
-    sublw 6
-    btfss STATUS, 2
+    incf D_SEG, F ; Incrementamos en 1 el valor de D_SEG
+    movf D_SEG, W ; Movemos el valor de D_SEG a W
+    sublw 6 ; Restamos "6 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto POP
     goto POP
-    clrf D_SEG
+    clrf D_SEG ; Limpiamos D_SEG
     goto INC_U_MIN
 
 INC_U_MIN:
-    incf U_MIN, F
-    movf U_MIN, W
-    sublw 10
-    btfss STATUS, 2
+    incf U_MIN, F ; Incrementamos en 1 el valor de U_MIN
+    movf U_MIN, W ; Movemos el valor de U_MIN a W
+    sublw 10 ; Restamos "10 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto POP
     goto POP
-    clrf U_MIN
+    clrf U_MIN ; Limpiamos U_MIN
     goto INC_D_MIN
 
 INC_D_MIN:
-    incf D_MIN, F
-    movf D_MIN, W
-    sublw 6
-    btfss STATUS, 2
+    incf D_MIN, F ; Incrementamos en 1 el valor de D_MIN
+    movf D_MIN, W ; Movemos el valor de D_MIN a W
+    sublw 6 ; Restamos "6 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto POP
     goto POP
-    clrf D_MIN
+    clrf D_MIN ; Limpiamos D_MIN
     goto POP
 
 POP:
