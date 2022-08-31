@@ -2510,11 +2510,13 @@ D_SEG:
 PSECT CODE, delta=2, abs
  ORG 0x0000
     goto MAIN
+
 ;*******************************************************************************
 ; Vector ISR Interrupciones
 ;*******************************************************************************
 PSECT CODE, delta=2, abs
  ORG 0x0004
+
 PUSH:
     movwf W_TEMP ; Se carga el valor de W a W_TEMP
     swapf STATUS, W ; Se intercambian el nibble más significativo y el
@@ -2568,7 +2570,7 @@ POP:
 ; Código Principal
 ;*******************************************************************************
 PSECT CODE, delta=2, abs
- ORG 0x0100
+ ORG 0x0200
 
 MAIN:
 
@@ -2582,6 +2584,11 @@ MAIN:
 
     bsf OSCCON, 0 ; ((OSCCON) and 07Fh), 0 Reloj Interno
 
+    BANKSEL ANSEL
+
+    clrf ANSEL
+    clrf ANSELH ; I/O Digitales
+
     BANKSEL TRISA
 
     clrf TRISA
@@ -2592,22 +2599,11 @@ MAIN:
     bsf TRISB, 1
     bsf TRISB, 2 ; Se configuran ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1 y ((PORTB) and 07Fh), 2 como inputs
 
-    BANKSEL IOCB
-
-    bsf IOCB, 0
-    bsf IOCB, 1
-    bsf IOCB, 2 ; Habilitando ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1 y ((PORTB) and 07Fh), 2 para las ISR de ((INTCON) and 07Fh), 3
-
     BANKSEL WPUB
 
     bsf WPUB, 0
     bsf WPUB, 1
     bsf WPUB, 2 ; Habilitando los pull-ups en ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1 y ((PORTB) and 07Fh), 2
-
-    BANKSEL ANSEL
-
-    clrf ANSEL
-    clrf ANSELH ; I/O Digitales
 
     BANKSEL PORTC
 
@@ -2621,6 +2617,31 @@ MAIN:
     BANKSEL OPTION_REG
 
     bcf OPTION_REG, 7 ; Habilitando que el PORTB tenga pull-ups
+
+    ; Configuración de las interrupciones
+
+    BANKSEL INTCON
+
+    bsf INTCON, 7 ; Habilitamos las interrupciones globales (((INTCON) and 07Fh), 7)
+    bsf INTCON, 6 ; Habilitamos la interrupción del ((INTCON) and 07Fh), 6
+    bsf INTCON, 3 ; Habilitamos la interrupción del PORTB (((INTCON) and 07Fh), 0)
+    bcf INTCON, 0 ; Baja la bandera que indica una interrupción en
+                        ; el PORTB
+
+    BANKSEL PIE1
+
+    bsf PIE1, 0 ; Habilitamos la interrupción del TMR1
+
+    BANKSEL PIR1
+
+    bcf PIR1, 0 ; Baja la bandera que indica una interrupción en
+   ; el TMR1
+
+    BANKSEL IOCB
+
+    bsf IOCB, 0
+    bsf IOCB, 1
+    bsf IOCB, 2 ; Habilitando ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1 y ((PORTB) and 07Fh), 2 para las ISR de ((INTCON) and 07Fh), 3
 
     ; Configuración TMR1
 
@@ -2642,25 +2663,6 @@ MAIN:
     movwf TMR1L
     movlw 0x85
     movwf TMR1H
-
-    ; Configuración de interrupciones
-
-    BANKSEL INTCON
-
-    bsf INTCON, 7 ; Habilitamos las interrupciones globales (((INTCON) and 07Fh), 7)
-    bsf INTCON, 6 ; Habilitamos la interrupción del ((INTCON) and 07Fh), 6
-    bsf INTCON, 3 ; Habilitamos la interrupción del PORTB (((INTCON) and 07Fh), 0)
-    bcf INTCON, 0 ; Baja la bandera que indica una interrupción en
-                        ; el PORTB
-
-    BANKSEL PIE1
-
-    bsf PIE1, 0 ; Habilitamos la interrupción del TMR1
-
-    BANKSEL PIR1
-
-    bcf PIR1, 0 ; Baja la bandera que indica una interrupción en
-   ; el TMR1
 
 ;*******************************************************************************
 ; Loop
@@ -2685,9 +2687,11 @@ DISP1:
     goto LOOP
 
 PSECT CODE, ABS, DELTA=2
- ORG 0x1800
+ ORG 0x100
 
  TABLA:
+    clrf PCLATH
+    bsf PCLATH, 0
     addwf PCL, F
     retlw 0b00111111 ; 0
     retlw 0b00000110 ; 1
