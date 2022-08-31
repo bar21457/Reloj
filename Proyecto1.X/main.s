@@ -77,7 +77,7 @@ PUSH:
     swapf STATUS, W     ; Se intercambian el nibble más significativo y el
                         ; nibble menos significativo de STATUS y se carga
 			; en W
-    movwf STATUS_TEMP     ; Se carga el valor de W a STAT_TEMP
+    movwf STATUS_TEMP   ; Se carga el valor de W a STAT_TEMP
     
 ISR_TMR1:
     btfss PIR1, 0	; Revisa el bit 0 de PIR1, si vale 1 se salta el GOTO
