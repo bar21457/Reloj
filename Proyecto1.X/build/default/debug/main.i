@@ -2503,6 +2503,12 @@ U_SEG:
     DS 1
 D_SEG:
     DS 1
+U_MIN:
+    DS 1
+D_MIN:
+    DS 1
+CONT_10MS:
+    DS 1
 
 ;*******************************************************************************
 ; Vector Reset
@@ -2510,11 +2516,13 @@ D_SEG:
 PSECT CODE, delta=2, abs
  ORG 0x0000
     goto MAIN
+
 ;*******************************************************************************
 ; Vector ISR Interrupciones
 ;*******************************************************************************
 PSECT CODE, delta=2, abs
  ORG 0x0004
+
 PUSH:
     movwf W_TEMP ; Se carga el valor de W a W_TEMP
     swapf STATUS, W ; Se intercambian el nibble más significativo y el
@@ -2522,8 +2530,20 @@ PUSH:
    ; en W
     movwf STATUS_TEMP ; Se carga el valor de W a STAT_TEMP
 
+ISR_TMR0:
+    btfss INTCON, 2 ; Revisa la bandera de interrupción de TMR0, si vale 1,
+                        ; se salta el goto POP
+    goto ISR_TMR1
+    bcf INTCON, 2 ; Baja la bandera que indica una interrupción en
+                        ; el TMR0
+    movlw 100 ; Cargamos 100 a W
+    movwf TMR0 ; Cargamos W a TMR0
+    incf CONT_10MS, F ; Incrementamos en 1 el valor de CONT_10MS
+    goto ISR_TMR1
+
 ISR_TMR1:
-    btfss PIR1, 0 ; Revisa el bit 0 de PIR1, si vale 1 se salta el GOTO
+    btfss PIR1, 0 ; Revisa la bandera de interrupción de TMR1, si vale 1,
+                        ; se salta el goto POP
     goto POP
     bcf PIR1, 0 ; Baja la bandera que indica una interrupción en
                         ; el TMR1
@@ -2534,21 +2554,43 @@ ISR_TMR1:
     goto INC_U_SEG
 
 INC_U_SEG:
-    incf U_SEG, F
-    movf U_SEG, W
-    sublw 10
-    btfss STATUS, 2
+    incf U_SEG, F ; Incrementamos en 1 el valor de U_SEG
+    movf U_SEG, W ; Movemos el valor de U_SEG a W
+    sublw 10 ; Restamos "10 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto POP
     goto POP
-    clrf U_SEG
+    clrf U_SEG ; Limpiamos U_SEG
     goto INC_D_SEG
 
 INC_D_SEG:
-    incf D_SEG, F
-    movf D_SEG, W
-    sublw 6
-    btfss STATUS, 2
+    incf D_SEG, F ; Incrementamos en 1 el valor de D_SEG
+    movf D_SEG, W ; Movemos el valor de D_SEG a W
+    sublw 6 ; Restamos "6 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto POP
     goto POP
-    clrf D_SEG
+    clrf D_SEG ; Limpiamos D_SEG
+    goto INC_U_MIN
+
+INC_U_MIN:
+    incf U_MIN, F ; Incrementamos en 1 el valor de U_MIN
+    movf U_MIN, W ; Movemos el valor de U_MIN a W
+    sublw 10 ; Restamos "10 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto POP
+    goto POP
+    clrf U_MIN ; Limpiamos U_MIN
+    goto INC_D_MIN
+
+INC_D_MIN:
+    incf D_MIN, F ; Incrementamos en 1 el valor de D_MIN
+    movf D_MIN, W ; Movemos el valor de D_MIN a W
+    sublw 6 ; Restamos "6 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto POP
+    goto POP
+    clrf D_MIN ; Limpiamos D_MIN
     goto POP
 
 POP:
@@ -2568,9 +2610,11 @@ POP:
 ; Código Principal
 ;*******************************************************************************
 PSECT CODE, delta=2, abs
- ORG 0x0100
+ ORG 0x0200
 
 MAIN:
+
+    ; Configuración del oscilador interno
 
     BANKSEL OSCCON
 
@@ -2582,32 +2626,33 @@ MAIN:
 
     bsf OSCCON, 0 ; ((OSCCON) and 07Fh), 0 Reloj Interno
 
+    ; Configuración de puertos
+
+    BANKSEL ANSEL
+
+    clrf ANSEL
+    clrf ANSELH ; I/O Digitales
+
     BANKSEL TRISA
 
     clrf TRISA
-    clrf TRISC
+
+    bcf TRISC, 0
+    bcf TRISC, 1
+    bcf TRISC, 2
+    bcf TRISC, 3
+
     clrf TRISD ; Se configuran los puertos A, C y D como outputs
 
     bsf TRISB, 0
     bsf TRISB, 1
     bsf TRISB, 2 ; Se configuran ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1 y ((PORTB) and 07Fh), 2 como inputs
 
-    BANKSEL IOCB
-
-    bsf IOCB, 0
-    bsf IOCB, 1
-    bsf IOCB, 2 ; Habilitando ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1 y ((PORTB) and 07Fh), 2 para las ISR de ((INTCON) and 07Fh), 3
-
     BANKSEL WPUB
 
     bsf WPUB, 0
     bsf WPUB, 1
     bsf WPUB, 2 ; Habilitando los pull-ups en ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1 y ((PORTB) and 07Fh), 2
-
-    BANKSEL ANSEL
-
-    clrf ANSEL
-    clrf ANSELH ; I/O Digitales
 
     BANKSEL PORTC
 
@@ -2617,19 +2662,70 @@ MAIN:
 
     clrf U_SEG
     clrf D_SEG
+    clrf U_MIN
+    clrf D_MIN
+    clrf DISP
 
     BANKSEL OPTION_REG
 
     bcf OPTION_REG, 7 ; Habilitando que el PORTB tenga pull-ups
 
-    ; Configuración TMR1
+    ; Configuración de las interrupciones
+
+    BANKSEL INTCON
+
+    bsf INTCON, 7 ; Habilitamos las interrupciones globales (((INTCON) and 07Fh), 7)
+    bsf INTCON, 6 ; Habilitamos la interrupción del ((INTCON) and 07Fh), 6
+    bsf INTCON, 5 ; Habilitamos la interrupción del ((INTCON) and 07Fh), 5
+    bsf INTCON, 3 ; Habilitamos la interrupción del PORTB (((INTCON) and 07Fh), 0)
+    bcf INTCON, 2 ; Baja la bandera que indica una interrupción en
+   ; el TMR0
+    bcf INTCON, 0 ; Baja la bandera que indica una interrupción en
+                        ; el PORTB
+
+    BANKSEL PIE1
+
+    bsf PIE1, 0 ; Habilitamos la interrupción del TMR1
+
+    BANKSEL PIR1
+
+    bcf PIR1, 0 ; Baja la bandera que indica una interrupción en
+   ; el TMR1
+
+    BANKSEL IOCB
+
+    bsf IOCB, 0
+    bsf IOCB, 1
+    bsf IOCB, 2 ; Habilitando ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1 y ((PORTB) and 07Fh), 2 para las ISR de ((INTCON) and 07Fh), 3
+
+    ; Configuración del TMR0
+
+    BANKSEL OPTION_REG
+
+    bcf OPTION_REG, 5 ; ((OPTION_REG) and 07Fh), 5; FOSC/4 como reloj (modo temporizador)
+    bcf OPTION_REG, 3 ; ((OPTION_REG) and 07Fh), 3: asignamos el prescaler al TMR0
+
+    ; ((OPTION_REG) and 07Fh), 2 -0: Selección del prescaler en 1:16
+
+    bsf OPTION_REG, 0
+    bsf OPTION_REG, 1
+    bcf OPTION_REG, 2
+
+    ; Cargamos el valor de N = 100 (Desborde de 10ms)
+
+    BANKSEL TMR0
+
+    movlw 100
+    movwf TMR0
+
+    ; Configuración del TMR1
 
     BANKSEL T1CON
 
     bsf T1CON, 0 ; Habilitamos el TMR1
     bcf T1CON, 1 ; Selección del Reloj Interno
 
-    ; Selección del Prescaler en 1:8
+    ; Selección del prescaler en 1:8
 
     bsf T1CON, 4
     bsf T1CON, 5
@@ -2643,51 +2739,53 @@ MAIN:
     movlw 0x85
     movwf TMR1H
 
-    ; Configuración de interrupciones
-
-    BANKSEL INTCON
-
-    bsf INTCON, 7 ; Habilitamos las interrupciones globales (((INTCON) and 07Fh), 7)
-    bsf INTCON, 6 ; Habilitamos la interrupción del ((INTCON) and 07Fh), 6
-    bsf INTCON, 3 ; Habilitamos la interrupción del PORTB (((INTCON) and 07Fh), 0)
-    bcf INTCON, 0 ; Baja la bandera que indica una interrupción en
-                        ; el PORTB
-
-    BANKSEL PIE1
-
-    bsf PIE1, 0 ; Habilitamos la interrupción del TMR1
-
-    BANKSEL PIR1
-
-    bcf PIR1, 0 ; Baja la bandera que indica una interrupción en
-   ; el TMR1
-
 ;*******************************************************************************
 ; Loop
 ;*******************************************************************************
 
 LOOP:
 
+    btfss DISP, 0
+    goto DISP0
+    goto DISP1
+
 DISP0:
-    movf U_SEG, W ; Copia el valor de U_SEG a W
+    bsf TRISC, 0 ; Encendemos DISP0
+    bcf TRISC, 1 ; Apagamos DISP1
+    movf U_SEG, W ; Copia el valor de U_MIN a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP0
-    movwf PORTC ; Se carga W a PORTC
+    movwf PORTD ; Se carga W a PORTD
+    bsf DISP, 0
+    goto VERIFICACION
 
 DISP1:
-    movf D_SEG, W ; Copia el valor de D_SEG a W
+    bcf TRISC, 0 ; Apagamos DISP0
+    bsf TRISC, 1 ; Encendemos DISP1
+    movf D_SEG, W ; Copia el valor de D_MIN a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP1
     movwf PORTD ; Se carga W a PORTD
+    bcf DISP, 0
+    goto VERIFICACION
 
+VERIFICACION:
+    movf CONT_10MS, W ; Copia el valor de CONT_10MS a W
+    sublw 10 ; Restamos "10 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto VERIFICACION
+    goto VERIFICACION
+    clrf CONT_10MS ; Limpiamos CONT_10MS
     goto LOOP
 
 PSECT CODE, ABS, DELTA=2
- ORG 0x1800
+ ORG 0x100
 
  TABLA:
+    clrf PCLATH
+    bsf PCLATH, 0
     addwf PCL, F
     retlw 0b00111111 ; 0
     retlw 0b00000110 ; 1

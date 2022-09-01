@@ -2533,7 +2533,7 @@ PUSH:
 ISR_TMR0:
     btfss INTCON, 2 ; Revisa la bandera de interrupción de TMR0, si vale 1,
                         ; se salta el goto POP
-    goto POP
+    goto ISR_TMR1
     bcf INTCON, 2 ; Baja la bandera que indica una interrupción en
                         ; el TMR0
     movlw 100 ; Cargamos 100 a W
@@ -2636,7 +2636,12 @@ MAIN:
     BANKSEL TRISA
 
     clrf TRISA
-    clrf TRISC
+
+    bcf TRISC, 0 ; DISP0
+    bcf TRISC, 1 ; DISP1
+    bcf TRISC, 2 ; DISP2
+    bcf TRISC, 3 ; DISP3
+
     clrf TRISD ; Se configuran los puertos A, C y D como outputs
 
     bsf TRISB, 0
@@ -2657,6 +2662,9 @@ MAIN:
 
     clrf U_SEG
     clrf D_SEG
+    clrf U_MIN
+    clrf D_MIN
+    clrf DISP
 
     BANKSEL OPTION_REG
 
@@ -2737,24 +2745,70 @@ MAIN:
 
 LOOP:
 
+    btfss DISP, 0 ; Si el valor del bit 0 de DISP es 1, se salta el
+   ; goto CHECK_Y
+    goto CHECK_Y
+    btfss DISP, 1 ; Si el valor del bit 1 de DISP es 1, se salta el
+   ; goto DISP1
+    goto DISP1 ; DISP = 01
+    goto DISP3 ; DISP = 11
+
+CHECK_Y:
+    btfss DISP, 1 ; Si el valor del bit 1 de DISP es 1, se salta el
+   ; goto DISP1
+    goto DISP0 ; DISP = 00
+    goto DISP2 ; DISP = 10
+
 DISP0:
     bsf TRISC, 0 ; Encendemos DISP0
     bcf TRISC, 1 ; Apagamos DISP1
-    movf U_SEG, W ; Copia el valor de U_MIN a W
+    bcf TRISC, 2 ; Apagamos DISP2
+    bcf TRISC, 3 ; Apagamos DISP3
+    movf U_SEG, W ; Copia el valor de U_SEG a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP0
     movwf PORTD ; Se carga W a PORTD
+    bsf DISP, 0
     goto VERIFICACION
 
 DISP1:
     bcf TRISC, 0 ; Apagamos DISP0
     bsf TRISC, 1 ; Encendemos DISP1
-    movf D_SEG, W ; Copia el valor de D_MIN a W
+    bcf TRISC, 2 ; Apagamos DISP2
+    bcf TRISC, 3 ; Apagamos DISP3
+    movf D_SEG, W ; Copia el valor de D_SEG a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP1
     movwf PORTD ; Se carga W a PORTD
+    bcf DISP, 0
+    goto VERIFICACION
+
+DISP2:
+    bcf TRISC, 0 ; Apagamos DISP0
+    bcf TRISC, 1 ; Apagamos DISP1
+    bsf TRISC, 2 ; Encendemos DISP2
+    bcf TRISC, 3 ; Apagamos DISP3
+    movf U_MIN, W ; Copia el valor de U_MIN a W
+    PAGESEL TABLA
+    call TABLA
+    PAGESEL DISP0
+    movwf PORTD ; Se carga W a PORTD
+    bsf DISP, 0
+    goto VERIFICACION
+
+DISP3:
+    bcf TRISC, 0 ; Apagamos DISP0
+    bcf TRISC, 1 ; Apagamos DISP1
+    bcf TRISC, 2 ; Apagamos DISP2
+    bsf TRISC, 3 ; Encendemos DISP3
+    movf D_MIN, W ; Copia el valor de D_MIN a W
+    PAGESEL TABLA
+    call TABLA
+    PAGESEL DISP1
+    movwf PORTD ; Se carga W a PORTD
+    bcf DISP, 0
     goto VERIFICACION
 
 VERIFICACION:
@@ -2762,6 +2816,7 @@ VERIFICACION:
     sublw 10 ; Restamos "10 - W"
     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
    ; goto VERIFICACION
+    goto VERIFICACION
     clrf CONT_10MS ; Limpiamos CONT_10MS
     goto LOOP
 
