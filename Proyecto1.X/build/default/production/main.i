@@ -2545,7 +2545,7 @@ ISR_TMR0:
                         ; el TMR0
     movlw 240 ; Cargamos 240 a W
     movwf TMR0 ; Cargamos W a TMR0
-    incf CONT_1MS, F ; Incrementamos en 1 el valor de CONT_10MS
+    incf CONT_1MS, F ; Incrementamos en 1 el valor de CONT_1MS
     ;goto ISR_TMR1
 
 ISR_TMR1:
@@ -2820,12 +2820,12 @@ DISP3:
     goto VERIFICACION
 
 VERIFICACION:
-    movf CONT_1MS, W ; Copia el valor de CONT_10MS a W
-    sublw 5 ; Restamos "10 - W"
+    movf CONT_1MS, W ; Copia el valor de CONT_1MS a W
+    sublw 10 ; Restamos "10 - W"
     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
    ; goto VERIFICACION
     goto VERIFICACION
-    clrf CONT_1MS ; Limpiamos CONT_10MS
+    clrf CONT_1MS ; Limpiamos CONT_1MS
     goto LOOP
 
 PSECT CODE, ABS, DELTA=2
