@@ -81,6 +81,13 @@ PUSH:
 			; en W
     movwf STATUS_TEMP   ; Se carga el valor de W a STAT_TEMP
     
+ISR_RBIF:
+    btfss INTCON, 0	; Revisa la bandera de interrupción de RBIF, si vale 1, 
+                        ; se salta el goto POP
+    goto ISR_TMR0
+    bcf INTCON, 0	; Baja la bandera que indica una interrupción en 
+                        ; el TMR0
+    
 ISR_TMR0:
     btfss INTCON, 2	; Revisa la bandera de interrupción de TMR0, si vale 1, 
                         ; se salta el goto POP
@@ -221,34 +228,6 @@ MAIN:
     
     bcf OPTION_REG, 7	; Habilitando que el PORTB tenga pull-ups
     
-    ; Configuración de las interrupciones
-    
-    BANKSEL INTCON
-    
-    bsf INTCON, 7       ; Habilitamos las interrupciones globales (GIE)
-    bsf INTCON, 6       ; Habilitamos la interrupción del PEIE
-    bsf INTCON, 5	; Habilitamos la interrupción del T0IE
-    bsf INTCON, 3       ; Habilitamos la interrupción del PORTB (RBIF)
-    bcf INTCON, 2	; Baja la bandera que indica una interrupción en
-			; el TMR0
-    bcf INTCON, 0       ; Baja la bandera que indica una interrupción en
-                        ; el PORTB
-
-    BANKSEL PIE1
-    
-    bsf PIE1, 0		; Habilitamos la interrupción del TMR1
-    
-    BANKSEL PIR1
-    
-    bcf PIR1, 0		; Baja la bandera que indica una interrupción en
-			; el TMR1
-    
-    BANKSEL IOCB
-    
-    bsf IOCB, 0
-    bsf IOCB, 1
-    bsf IOCB, 2		; Habilitando RB0, RB1 y RB2 para las ISR de RBIE
-    
     ; Configuración del TMR0
     
     BANKSEL OPTION_REG
@@ -289,6 +268,34 @@ MAIN:
     movwf TMR1L
     movlw 0x85
     movwf TMR1H
+    
+    ; Configuración de las interrupciones
+    
+    BANKSEL INTCON
+    
+    bsf INTCON, 7       ; Habilitamos las interrupciones globales (GIE)
+    bsf INTCON, 6       ; Habilitamos la interrupción del PEIE
+    bsf INTCON, 5	; Habilitamos la interrupción del T0IE
+    bsf INTCON, 3       ; Habilitamos la interrupción del PORTB (RBIF)
+    bcf INTCON, 2	; Baja la bandera que indica una interrupción en
+			; el TMR0
+    bcf INTCON, 0       ; Baja la bandera que indica una interrupción en
+                        ; el PORTB
+
+    BANKSEL PIE1
+    
+    bsf PIE1, 0		; Habilitamos la interrupción del TMR1
+    
+    BANKSEL PIR1
+    
+    bcf PIR1, 0		; Baja la bandera que indica una interrupción en
+			; el TMR1
+    
+    BANKSEL IOCB
+    
+    bsf IOCB, 0
+    bsf IOCB, 1
+    bsf IOCB, 2		; Habilitando RB0, RB1 y RB2 para las ISR de RBIE
 
 ;******************************************************************************* 
 ; Loop   
@@ -320,7 +327,7 @@ DISP0:
     call TABLA
     PAGESEL DISP0
     movwf PORTD		; Se carga W a PORTD
-    bsf DISP, 0
+    incf DISP, F
     goto VERIFICACION
     
 DISP1:
@@ -333,7 +340,7 @@ DISP1:
     call TABLA
     PAGESEL DISP1
     movwf PORTD		; Se carga W a PORTD
-    bcf DISP, 0
+    incf DISP, F
     goto VERIFICACION
     
 DISP2:
@@ -344,9 +351,9 @@ DISP2:
     movf U_MIN, W	; Copia el valor de U_MIN a W
     PAGESEL TABLA
     call TABLA
-    PAGESEL DISP0
+    PAGESEL DISP2
     movwf PORTD		; Se carga W a PORTD
-    bsf DISP, 0
+    incf DISP, F
     goto VERIFICACION
     
 DISP3:
@@ -357,9 +364,9 @@ DISP3:
     movf D_MIN, W	; Copia el valor de D_MIN a W
     PAGESEL TABLA
     call TABLA
-    PAGESEL DISP1
+    PAGESEL DISP3
     movwf PORTD		; Se carga W a PORTD
-    bcf DISP, 0
+    clrf DISP
     goto VERIFICACION
     
 VERIFICACION:

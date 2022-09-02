@@ -2530,6 +2530,13 @@ PUSH:
    ; en W
     movwf STATUS_TEMP ; Se carga el valor de W a STAT_TEMP
 
+ISR_RBIF:
+    btfss INTCON, 0 ; Revisa la bandera de interrupción de ((INTCON) and 07Fh), 0, si vale 1,
+                        ; se salta el goto POP
+    goto ISR_TMR0
+    bcf INTCON, 0 ; Baja la bandera que indica una interrupción en
+                        ; el TMR0
+
 ISR_TMR0:
     btfss INTCON, 2 ; Revisa la bandera de interrupción de TMR0, si vale 1,
                         ; se salta el goto POP
@@ -2670,34 +2677,6 @@ MAIN:
 
     bcf OPTION_REG, 7 ; Habilitando que el PORTB tenga pull-ups
 
-    ; Configuración de las interrupciones
-
-    BANKSEL INTCON
-
-    bsf INTCON, 7 ; Habilitamos las interrupciones globales (((INTCON) and 07Fh), 7)
-    bsf INTCON, 6 ; Habilitamos la interrupción del ((INTCON) and 07Fh), 6
-    bsf INTCON, 5 ; Habilitamos la interrupción del ((INTCON) and 07Fh), 5
-    bsf INTCON, 3 ; Habilitamos la interrupción del PORTB (((INTCON) and 07Fh), 0)
-    bcf INTCON, 2 ; Baja la bandera que indica una interrupción en
-   ; el TMR0
-    bcf INTCON, 0 ; Baja la bandera que indica una interrupción en
-                        ; el PORTB
-
-    BANKSEL PIE1
-
-    bsf PIE1, 0 ; Habilitamos la interrupción del TMR1
-
-    BANKSEL PIR1
-
-    bcf PIR1, 0 ; Baja la bandera que indica una interrupción en
-   ; el TMR1
-
-    BANKSEL IOCB
-
-    bsf IOCB, 0
-    bsf IOCB, 1
-    bsf IOCB, 2 ; Habilitando ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1 y ((PORTB) and 07Fh), 2 para las ISR de ((INTCON) and 07Fh), 3
-
     ; Configuración del TMR0
 
     BANKSEL OPTION_REG
@@ -2739,6 +2718,34 @@ MAIN:
     movlw 0x85
     movwf TMR1H
 
+    ; Configuración de las interrupciones
+
+    BANKSEL INTCON
+
+    bsf INTCON, 7 ; Habilitamos las interrupciones globales (((INTCON) and 07Fh), 7)
+    bsf INTCON, 6 ; Habilitamos la interrupción del ((INTCON) and 07Fh), 6
+    bsf INTCON, 5 ; Habilitamos la interrupción del ((INTCON) and 07Fh), 5
+    bsf INTCON, 3 ; Habilitamos la interrupción del PORTB (((INTCON) and 07Fh), 0)
+    bcf INTCON, 2 ; Baja la bandera que indica una interrupción en
+   ; el TMR0
+    bcf INTCON, 0 ; Baja la bandera que indica una interrupción en
+                        ; el PORTB
+
+    BANKSEL PIE1
+
+    bsf PIE1, 0 ; Habilitamos la interrupción del TMR1
+
+    BANKSEL PIR1
+
+    bcf PIR1, 0 ; Baja la bandera que indica una interrupción en
+   ; el TMR1
+
+    BANKSEL IOCB
+
+    bsf IOCB, 0
+    bsf IOCB, 1
+    bsf IOCB, 2 ; Habilitando ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1 y ((PORTB) and 07Fh), 2 para las ISR de ((INTCON) and 07Fh), 3
+
 ;*******************************************************************************
 ; Loop
 ;*******************************************************************************
@@ -2769,7 +2776,7 @@ DISP0:
     call TABLA
     PAGESEL DISP0
     movwf PORTD ; Se carga W a PORTD
-    bsf DISP, 0
+    incf DISP, F
     goto VERIFICACION
 
 DISP1:
@@ -2782,7 +2789,7 @@ DISP1:
     call TABLA
     PAGESEL DISP1
     movwf PORTD ; Se carga W a PORTD
-    bcf DISP, 0
+    incf DISP, F
     goto VERIFICACION
 
 DISP2:
@@ -2793,9 +2800,9 @@ DISP2:
     movf U_MIN, W ; Copia el valor de U_MIN a W
     PAGESEL TABLA
     call TABLA
-    PAGESEL DISP0
+    PAGESEL DISP2
     movwf PORTD ; Se carga W a PORTD
-    bsf DISP, 0
+    incf DISP, F
     goto VERIFICACION
 
 DISP3:
@@ -2806,9 +2813,9 @@ DISP3:
     movf D_MIN, W ; Copia el valor de D_MIN a W
     PAGESEL TABLA
     call TABLA
-    PAGESEL DISP1
+    PAGESEL DISP3
     movwf PORTD ; Se carga W a PORTD
-    bcf DISP, 0
+    clrf DISP
     goto VERIFICACION
 
 VERIFICACION:
