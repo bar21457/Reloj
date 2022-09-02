@@ -94,7 +94,7 @@ ISR_TMR0:
     goto ISR_TMR1
     bcf INTCON, 2	; Baja la bandera que indica una interrupción en 
                         ; el TMR0
-    movlw 61		; Cargamos 61 a W
+    movlw 245		; Cargamos 245 a W
     movwf TMR0		; Cargamos W a TMR0
     incf CONT_10MS, F	; Incrementamos en 1 el valor de CONT_10MS
     ;goto ISR_TMR1
@@ -256,11 +256,11 @@ MAIN:
     bsf OPTION_REG, 1
     bsf OPTION_REG, 2
     
-    ; Cargamos el valor de N = 61 (Desborde de 100ms)
+    ; Cargamos el valor de N = 61 (Desborde de 5ms)
     
     BANKSEL TMR0
     
-    movlw 61
+    movlw 245
     movwf TMR0
     
     ; Configuración del TMR1
