@@ -2507,7 +2507,7 @@ U_MIN:
     DS 1
 D_MIN:
     DS 1
-CONT_10MS:
+CONT_1MS:
     DS 1
 
 ;*******************************************************************************
@@ -2543,9 +2543,9 @@ ISR_TMR0:
     goto ISR_TMR1
     bcf INTCON, 2 ; Baja la bandera que indica una interrupción en
                         ; el TMR0
-    movlw 61 ; Cargamos 61 a W
+    movlw 240 ; Cargamos 240 a W
     movwf TMR0 ; Cargamos W a TMR0
-    incf CONT_10MS, F ; Incrementamos en 1 el valor de CONT_10MS
+    incf CONT_1MS, F ; Incrementamos en 1 el valor de CONT_10MS
     ;goto ISR_TMR1
 
 ISR_TMR1:
@@ -2672,6 +2672,7 @@ MAIN:
     clrf U_MIN
     clrf D_MIN
     clrf DISP
+    clrf CONT_1MS
 
     BANKSEL OPTION_REG
 
@@ -2699,17 +2700,17 @@ MAIN:
     bcf OPTION_REG, 5 ; ((OPTION_REG) and 07Fh), 5; FOSC/4 como reloj (modo temporizador)
     bcf OPTION_REG, 3 ; ((OPTION_REG) and 07Fh), 3: asignamos el prescaler al TMR0
 
-    ; ((OPTION_REG) and 07Fh), 2 -0: Selección del prescaler en 1:128
+    ; ((OPTION_REG) and 07Fh), 2 -0: Selección del prescaler en 1:16
 
-    bcf OPTION_REG, 0
+    bsf OPTION_REG, 0
     bsf OPTION_REG, 1
-    bsf OPTION_REG, 2
+    bcf OPTION_REG, 2
 
-    ; Cargamos el valor de N = 61 (Desborde de 100ms)
+    ; Cargamos el valor de N = 240 (Desborde de 1ms)
 
     BANKSEL TMR0
 
-    movlw 61
+    movlw 240
     movwf TMR0
 
     ; Configuración del TMR1
@@ -2819,12 +2820,12 @@ DISP3:
     goto VERIFICACION
 
 VERIFICACION:
-    movf CONT_10MS, W ; Copia el valor de CONT_10MS a W
-    sublw 10 ; Restamos "10 - W"
+    movf CONT_1MS, W ; Copia el valor de CONT_10MS a W
+    sublw 5 ; Restamos "10 - W"
     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
    ; goto VERIFICACION
     goto VERIFICACION
-    clrf CONT_10MS ; Limpiamos CONT_10MS
+    clrf CONT_1MS ; Limpiamos CONT_10MS
     goto LOOP
 
 PSECT CODE, ABS, DELTA=2
