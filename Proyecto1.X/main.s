@@ -94,10 +94,10 @@ ISR_TMR0:
     goto ISR_TMR1
     bcf INTCON, 2	; Baja la bandera que indica una interrupción en 
                         ; el TMR0
-    movlw 100		; Cargamos 100 a W
+    movlw 61		; Cargamos 61 a W
     movwf TMR0		; Cargamos W a TMR0
     incf CONT_10MS, F	; Incrementamos en 1 el valor de CONT_10MS
-    goto ISR_TMR1
+    ;goto ISR_TMR1
     
 ISR_TMR1:
     btfss PIR1, 0	; Revisa la bandera de interrupción de TMR1, si vale 1, 
@@ -109,7 +109,7 @@ ISR_TMR1:
     movwf TMR1L         ; Cargamos W a TMR1L
     movlw 0x85		; Cargamos 0x85 a W
     movwf TMR1H         ; Cargamos W a TMR1H
-    goto INC_U_SEG
+    ;goto INC_U_SEG
     
 INC_U_SEG:
     incf U_SEG, F	; Incrementamos en 1 el valor de U_SEG
@@ -228,6 +228,21 @@ MAIN:
     
     bcf OPTION_REG, 7	; Habilitando que el PORTB tenga pull-ups
     
+    BANKSEL PIE1
+    
+    bsf PIE1, 0		; Habilitamos la interrupción del TMR1
+    
+    BANKSEL PIR1
+    
+    bcf PIR1, 0		; Baja la bandera que indica una interrupción en
+			; el TMR1
+    
+    BANKSEL IOCB
+    
+    bsf IOCB, 0
+    bsf IOCB, 1
+    bsf IOCB, 2		; Habilitando RB0, RB1 y RB2 para las ISR de RBIE
+    
     ; Configuración del TMR0
     
     BANKSEL OPTION_REG
@@ -235,17 +250,17 @@ MAIN:
     bcf OPTION_REG, 5	; T0CS; FOSC/4 como reloj (modo temporizador)
     bcf OPTION_REG, 3	; PSA: asignamos el prescaler al TMR0
     
-    ; PS2-0: Selección del prescaler en 1:16
+    ; PS2-0: Selección del prescaler en 1:128
     
-    bsf OPTION_REG, 0
+    bcf OPTION_REG, 0
     bsf OPTION_REG, 1
-    bcf OPTION_REG, 2
+    bsf OPTION_REG, 2
     
-    ; Cargamos el valor de N = 100 (Desborde de 10ms)
+    ; Cargamos el valor de N = 61 (Desborde de 100ms)
     
     BANKSEL TMR0
     
-    movlw 100
+    movlw 61
     movwf TMR0
     
     ; Configuración del TMR1
@@ -281,21 +296,6 @@ MAIN:
 			; el TMR0
     bcf INTCON, 0       ; Baja la bandera que indica una interrupción en
                         ; el PORTB
-
-    BANKSEL PIE1
-    
-    bsf PIE1, 0		; Habilitamos la interrupción del TMR1
-    
-    BANKSEL PIR1
-    
-    bcf PIR1, 0		; Baja la bandera que indica una interrupción en
-			; el TMR1
-    
-    BANKSEL IOCB
-    
-    bsf IOCB, 0
-    bsf IOCB, 1
-    bsf IOCB, 2		; Habilitando RB0, RB1 y RB2 para las ISR de RBIE
 
 ;******************************************************************************* 
 ; Loop   
