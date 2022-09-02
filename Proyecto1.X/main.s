@@ -60,6 +60,10 @@ D_MIN:
     DS 1
 CONT_1MS:
     DS 1
+U_HOR:
+    DS 1
+D_HOR:
+    DS 1
 
 ;******************************************************************************* 
 ; Vector Reset    
@@ -149,6 +153,41 @@ INC_D_MIN:
 			; goto POP
     goto POP
     clrf D_MIN		; Limpiamos D_MIN
+    goto INC_U_HOR
+
+INC_U_HOR:
+    movf D_HOR, W	; Movemos el valor de D_HOR a W
+    sublw 2		; Restamos "2 - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
+			; goto INC_U_HOR_2
+    goto INC_U_HOR_2
+    incf U_HOR, F	; Incrementamos en 1 el valor de U_HOR
+    movf U_HOR, W	; Movemos el valor de U_HOR a W
+    sublw 10		; Restamos "10 - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
+			; goto POP
+    goto POP
+    clrf U_HOR		; Limpiamos U_HOR
+    goto INC_D_HOR
+
+INC_U_HOR_2:
+    incf U_HOR, F	; Incrementamos en 1 el valor de U_HOR
+    movf U_HOR, W	; Movemos el valor de U_HOR a W
+    sublw 5		; Restamos "5 - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
+			; goto POP
+    goto POP
+    clrf U_HOR		; Limpiamos U_HOR
+    goto INC_D_HOR
+
+INC_D_HOR:
+    incf D_HOR, F	; Incrementamos en 1 el valor de D_HOR
+    movf D_HOR, W	; Movemos el valor de D_HOR a W
+    sublw 3		; Restamos "6 - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
+			; goto POP
+    goto POP
+    clrf D_HOR		; Limpiamos D_HOR
     goto POP
    
 POP:
@@ -323,7 +362,7 @@ DISP0:
     bcf TRISC, 1	; Apagamos DISP1
     bcf TRISC, 2	; Apagamos DISP2
     bcf TRISC, 3	; Apagamos DISP3
-    movf U_SEG, W	; Copia el valor de U_SEG a W
+    movf U_MIN, W	; Copia el valor de U_MIN a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP0
@@ -336,7 +375,7 @@ DISP1:
     bsf TRISC, 1	; Encendemos DISP1
     bcf TRISC, 2	; Apagamos DISP2
     bcf TRISC, 3	; Apagamos DISP3
-    movf D_SEG, W	; Copia el valor de D_SEG a W
+    movf D_MIN, W	; Copia el valor de D_MIN a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP1
@@ -349,7 +388,7 @@ DISP2:
     bcf TRISC, 1	; Apagamos DISP1
     bsf TRISC, 2	; Encendemos DISP2
     bcf TRISC, 3	; Apagamos DISP3
-    movf U_MIN, W	; Copia el valor de U_MIN a W
+    movf U_HOR, W	; Copia el valor de U_HOR a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP2
@@ -362,7 +401,7 @@ DISP3:
     bcf TRISC, 1	; Apagamos DISP1
     bcf TRISC, 2	; Apagamos DISP2
     bsf TRISC, 3	; Encendemos DISP3
-    movf D_MIN, W	; Copia el valor de D_MIN a W
+    movf D_HOR, W	; Copia el valor de D_HOR a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP3
