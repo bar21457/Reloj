@@ -2513,6 +2513,8 @@ U_HOR:
     DS 1
 D_HOR:
     DS 1
+ESTADO:
+    DS 1
 
 ;*******************************************************************************
 ; Vector Reset
@@ -2536,10 +2538,72 @@ PUSH:
 
 ISR_RBIF:
     btfss INTCON, 0 ; Revisa la bandera de interrupción de ((INTCON) and 07Fh), 0, si vale 1,
-                        ; se salta el goto POP
+                        ; se salta el goto ISR_TMR0
     goto ISR_TMR0
+    btfsc PORTB, 4 ; Revisa si el bit 4 del PORTB está en 0, si vale 0,
+   ; se salta el goto CHECK_ESTADOS
+    goto SEL_ESTADO_ISR
+    incf ESTADO, F ; Incrementamos en 1 el valor de ESTADO
+    movf ESTADO, W ; Copia el valor de ESTADO a W
+    sublw 5 ; Restamos "6 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; clrf ESTADO
+    clrf ESTADO ; Limpiamos ESTADO
     bcf INTCON, 0 ; Baja la bandera que indica una interrupción en
-                        ; el TMR0
+                        ; el ((INTCON) and 07Fh), 0
+    goto ISR_TMR0
+
+SEL_ESTADO_ISR:
+    movf ESTADO, W ; Copia el valor de ESTADO a W
+    sublw 0 ; Restamos "0 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto ESTADO0_ISR
+    goto ESTADO0_ISR
+    movf ESTADO, W ; Copia el valor de ESTADO a W
+    sublw 1 ; Restamos "1 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto ESTADO1_ISR
+    goto ESTADO1_ISR
+    movf ESTADO, W ; Copia el valor de ESTADO a W
+    sublw 2 ; Restamos "2 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto ESTADO2_ISR
+    goto ESTADO2_ISR
+    movf ESTADO, W ; Copia el valor de ESTADO a W
+    sublw 3 ; Restamos "3 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto ESTADO3_ISR
+    goto ESTADO3_ISR
+    movf ESTADO, W ; Copia el valor de ESTADO a W
+    sublw 4 ; Restamos "4 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto ESTADO4_ISR
+    goto ESTADO4_ISR
+
+ESTADO0_ISR:
+    bcf INTCON, 0 ; Baja la bandera que indica una interrupción en
+                        ; el ((INTCON) and 07Fh), 0
+    goto ISR_TMR0
+
+ESTADO1_ISR:
+    bcf INTCON, 0 ; Baja la bandera que indica una interrupción en
+                        ; el ((INTCON) and 07Fh), 0
+    goto ISR_TMR0
+
+ESTADO2_ISR:
+    bcf INTCON, 0 ; Baja la bandera que indica una interrupción en
+                        ; el ((INTCON) and 07Fh), 0
+    goto ISR_TMR0
+
+ESTADO3_ISR:
+    bcf INTCON, 0 ; Baja la bandera que indica una interrupción en
+                        ; el ((INTCON) and 07Fh), 0
+    goto ISR_TMR0
+
+ESTADO4_ISR:
+    bcf INTCON, 0 ; Baja la bandera que indica una interrupción en
+                        ; el ((INTCON) and 07Fh), 0
+    goto ISR_TMR0
 
 ISR_TMR0:
     btfss INTCON, 2 ; Revisa la bandera de interrupción de TMR0, si vale 1,
@@ -2688,23 +2752,29 @@ MAIN:
     bcf TRISC, 2 ; DISP2
     bcf TRISC, 3 ; DISP3
 
-    clrf TRISD ; Se configuran los puertos A, C y D como outputs
+    clrf TRISD
+    clrf TRISE ; Se configuran los puertos A, C, D y E como outputs
 
     bsf TRISB, 0
     bsf TRISB, 1
-    bsf TRISB, 2 ; Se configuran ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1 y ((PORTB) and 07Fh), 2 como inputs
+    bsf TRISB, 2
+    bsf TRISB, 3
+    bsf TRISB, 4 ; Se configuran ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1 y ((PORTB) and 07Fh), 2 como inputs
 
     BANKSEL WPUB
 
     bsf WPUB, 0
     bsf WPUB, 1
-    bsf WPUB, 2 ; Habilitando los pull-ups en ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1 y ((PORTB) and 07Fh), 2
+    bsf WPUB, 2
+    bsf WPUB, 3
+    bsf WPUB, 4 ; Habilitando los pull-ups en ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1 y ((PORTB) and 07Fh), 2
 
     BANKSEL PORTC
 
     clrf PORTA ; Se limpia PORTA
     clrf PORTC ; Se limpia PORTC
     clrf PORTD ; Se limpia PORTD
+    clrf PORTE
 
     clrf U_SEG
     clrf D_SEG
@@ -2712,6 +2782,9 @@ MAIN:
     clrf D_MIN
     clrf DISP
     clrf CONT_1MS
+    clrf U_HOR
+    clrf D_HOR
+    clrf ESTADO
 
     BANKSEL OPTION_REG
 
@@ -2730,7 +2803,10 @@ MAIN:
 
     bsf IOCB, 0
     bsf IOCB, 1
-    bsf IOCB, 2 ; Habilitando ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1 y ((PORTB) and 07Fh), 2 para las ISR de ((INTCON) and 07Fh), 3
+    bsf IOCB, 2
+    bsf IOCB, 3
+    bsf IOCB, 4 ; Habilitando ((PORTB) and 07Fh), 0, ((PORTB) and 07Fh), 1, ((PORTB) and 07Fh), 2, ((PORTB) and 07Fh), 3 y ((PORTB) and 07Fh), 4 para las ISR
+   ; de ((INTCON) and 07Fh), 3
 
     ; Configuración del TMR0
 
@@ -2791,7 +2867,8 @@ MAIN:
 ;*******************************************************************************
 
 LOOP:
-
+    movf ESTADO, W
+    movwf PORTE
     btfss DISP, 0 ; Si el valor del bit 0 de DISP es 1, se salta el
    ; goto CHECK_Y
     goto CHECK_Y

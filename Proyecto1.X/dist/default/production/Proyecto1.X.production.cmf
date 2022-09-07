@@ -12,8 +12,8 @@
 # in delta units.  Any other numeric values are decimal.
 %PSECTS
 $build/default/production/main.o
-CODE - 0 0 0 294 2 1
-udata_bank0 BANK0 1 20 20 A 1 1
+CODE - 0 0 0 2A1 2 1
+udata_bank0 BANK0 1 20 20 B 1 1
 config CONFIG 4 2007 2007 2 2 1
 # %UNUSED Section
 # This section enumerates the unused ranges of each CLASS. Each entry
@@ -21,22 +21,22 @@ config CONFIG 4 2007 2007 2 2 1
 #    <class name> <range> <delta>
 # Addresses given in the range are in hexadecimal and units of delta.
 %UNUSED
-RAM 2A-6F 1
+RAM 2B-6F 1
 RAM A0-EF 1
 RAM 110-16F 1
 RAM 190-1EF 1
-BANK0 2A-6F 1
+BANK0 2B-6F 1
 BANK1 A0-EF 1
 BANK2 110-16F 1
 BANK3 190-1EF 1
-CONST 294-1FFF 2
-ENTRY 294-1FFF 2
+CONST 2A1-1FFF 2
+ENTRY 2A1-1FFF 2
 IDLOC 2000-2003 2
-CODE 294-1FFF 2
+CODE 2A1-1FFF 2
 COMMON 70-7F 1
 EEDATA 2100-21FF 2
-STRCODE 294-1FFF 2
-STRING 294-1FFF 2
+STRCODE 2A1-1FFF 2
+STRING 2A1-1FFF 2
 # %LINETAB Section
 # This section enumerates the file/line to address mappings.
 # The beginning of the section is indicated by %LINETAB.
@@ -51,227 +51,278 @@ STRING 294-1FFF 2
 # All other numeric values are in decimal.
 %LINETAB
 $build/default/production/main.o
-0 CODE ABS >72:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-0 CODE ABS >73:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-1 CODE ABS >79:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-4 CODE ABS >82:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-5 CODE ABS >83:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-6 CODE ABS >86:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-7 CODE ABS >89:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-8 CODE ABS >91:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-9 CODE ABS >92:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+0 CODE ABS >74:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+0 CODE ABS >75:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+1 CODE ABS >81:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+4 CODE ABS >84:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+5 CODE ABS >85:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+6 CODE ABS >88:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+7 CODE ABS >91:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+8 CODE ABS >93:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+9 CODE ABS >94:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
 A CODE ABS >96:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-B CODE ABS >98:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-C CODE ABS >99:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-D CODE ABS >101:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-E CODE ABS >102:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-F CODE ABS >103:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-10 CODE ABS >107:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-11 CODE ABS >109:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-12 CODE ABS >110:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-13 CODE ABS >112:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-14 CODE ABS >113:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-15 CODE ABS >114:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-16 CODE ABS >115:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-17 CODE ABS >119:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-18 CODE ABS >120:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-19 CODE ABS >121:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-1A CODE ABS >122:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-1B CODE ABS >124:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-1C CODE ABS >125:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-1D CODE ABS >126:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-1E CODE ABS >129:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-1F CODE ABS >130:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-20 CODE ABS >131:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-21 CODE ABS >132:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-22 CODE ABS >134:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-23 CODE ABS >135:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-24 CODE ABS >136:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-25 CODE ABS >139:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-26 CODE ABS >140:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-27 CODE ABS >141:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-28 CODE ABS >142:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-29 CODE ABS >144:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+B CODE ABS >97:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+C CODE ABS >98:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+D CODE ABS >99:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+E CODE ABS >100:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+F CODE ABS >102:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+10 CODE ABS >103:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+11 CODE ABS >105:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+12 CODE ABS >108:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+13 CODE ABS >109:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+14 CODE ABS >110:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+15 CODE ABS >112:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+16 CODE ABS >113:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+17 CODE ABS >114:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+18 CODE ABS >115:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+19 CODE ABS >117:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+1A CODE ABS >118:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+1B CODE ABS >119:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+1C CODE ABS >120:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+1D CODE ABS >122:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+1E CODE ABS >123:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+1F CODE ABS >124:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+20 CODE ABS >125:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+21 CODE ABS >127:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+22 CODE ABS >128:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+23 CODE ABS >129:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+24 CODE ABS >130:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+25 CODE ABS >132:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+26 CODE ABS >135:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+27 CODE ABS >137:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+28 CODE ABS >140:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+29 CODE ABS >142:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
 2A CODE ABS >145:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-2B CODE ABS >146:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-2C CODE ABS >149:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-2D CODE ABS >150:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-2E CODE ABS >151:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-2F CODE ABS >152:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-30 CODE ABS >154:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-31 CODE ABS >155:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-32 CODE ABS >156:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-33 CODE ABS >159:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-34 CODE ABS >160:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-35 CODE ABS >161:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-36 CODE ABS >163:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-37 CODE ABS >164:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-38 CODE ABS >165:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-39 CODE ABS >166:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-3A CODE ABS >167:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-3B CODE ABS >169:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-3C CODE ABS >170:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-3D CODE ABS >171:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-3E CODE ABS >174:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-3F CODE ABS >175:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-40 CODE ABS >176:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-41 CODE ABS >177:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-42 CODE ABS >179:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-43 CODE ABS >180:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-44 CODE ABS >181:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-45 CODE ABS >184:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-46 CODE ABS >185:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-47 CODE ABS >186:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-48 CODE ABS >187:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-49 CODE ABS >189:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-4A CODE ABS >190:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-4B CODE ABS >191:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-4C CODE ABS >194:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-4D CODE ABS >197:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-4E CODE ABS >198:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-4F CODE ABS >201:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-50 CODE ABS >204:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+2B CODE ABS >147:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+2C CODE ABS >150:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+2D CODE ABS >152:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+2E CODE ABS >155:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+2F CODE ABS >157:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+30 CODE ABS >160:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+31 CODE ABS >162:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+32 CODE ABS >163:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+33 CODE ABS >165:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+34 CODE ABS >166:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+35 CODE ABS >167:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+36 CODE ABS >171:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+37 CODE ABS >173:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+38 CODE ABS >174:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+39 CODE ABS >176:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+3A CODE ABS >177:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+3B CODE ABS >178:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+3C CODE ABS >179:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+3D CODE ABS >183:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+3E CODE ABS >184:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+3F CODE ABS >185:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+40 CODE ABS >186:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+41 CODE ABS >188:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+42 CODE ABS >189:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+43 CODE ABS >190:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+44 CODE ABS >193:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+45 CODE ABS >194:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+46 CODE ABS >195:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+47 CODE ABS >196:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+48 CODE ABS >198:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+49 CODE ABS >199:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+4A CODE ABS >200:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+4B CODE ABS >203:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+4C CODE ABS >204:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+4D CODE ABS >205:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+4E CODE ABS >206:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+4F CODE ABS >208:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+50 CODE ABS >209:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
 51 CODE ABS >210:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-100 CODE ABS >425:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-101 CODE ABS >426:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-102 CODE ABS >427:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-103 CODE ABS >428:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-104 CODE ABS >429:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-105 CODE ABS >430:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-106 CODE ABS >431:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-107 CODE ABS >432:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-108 CODE ABS >433:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-109 CODE ABS >434:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-10A CODE ABS >435:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-10B CODE ABS >436:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-10C CODE ABS >437:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-200 CODE ABS >216:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-202 CODE ABS >220:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-203 CODE ABS >221:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-204 CODE ABS >222:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-205 CODE ABS >224:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-206 CODE ABS >228:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-208 CODE ABS >230:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-209 CODE ABS >231:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-20A CODE ABS >233:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-20C CODE ABS >235:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-20D CODE ABS >237:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-20E CODE ABS >238:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-20F CODE ABS >239:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-210 CODE ABS >240:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-211 CODE ABS >242:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-212 CODE ABS >244:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-213 CODE ABS >245:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-214 CODE ABS >246:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-215 CODE ABS >248:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-217 CODE ABS >250:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-218 CODE ABS >251:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-219 CODE ABS >252:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-21A CODE ABS >254:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-21C CODE ABS >256:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-21D CODE ABS >257:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-21E CODE ABS >258:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-21F CODE ABS >260:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-220 CODE ABS >261:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-221 CODE ABS >262:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-222 CODE ABS >263:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-223 CODE ABS >264:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-224 CODE ABS >265:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-225 CODE ABS >267:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-227 CODE ABS >269:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-228 CODE ABS >271:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-22A CODE ABS >273:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-22B CODE ABS >275:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-22D CODE ABS >277:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-22E CODE ABS >280:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-230 CODE ABS >282:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-231 CODE ABS >283:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-232 CODE ABS >284:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-233 CODE ABS >288:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-235 CODE ABS >290:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-236 CODE ABS >291:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-237 CODE ABS >295:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-238 CODE ABS >296:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-239 CODE ABS >297:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-23A CODE ABS >301:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-23C CODE ABS >303:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-23D CODE ABS >304:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-23E CODE ABS >308:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-240 CODE ABS >310:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-241 CODE ABS >311:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-242 CODE ABS >315:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-243 CODE ABS >316:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-244 CODE ABS >320:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-246 CODE ABS >322:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-247 CODE ABS >323:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-248 CODE ABS >324:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-249 CODE ABS >325:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-24A CODE ABS >329:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-24C CODE ABS >331:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-24D CODE ABS >332:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-24E CODE ABS >333:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-24F CODE ABS >334:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-250 CODE ABS >335:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-251 CODE ABS >337:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-252 CODE ABS >346:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-253 CODE ABS >348:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-254 CODE ABS >349:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-255 CODE ABS >351:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-256 CODE ABS >352:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-257 CODE ABS >355:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-258 CODE ABS >357:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-259 CODE ABS >358:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-25A CODE ABS >361:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-25B CODE ABS >362:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-25C CODE ABS >363:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-25D CODE ABS >364:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-25E CODE ABS >365:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-25F CODE ABS >366:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-261 CODE ABS >367:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-262 CODE ABS >368:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-264 CODE ABS >369:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-265 CODE ABS >370:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-266 CODE ABS >371:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-267 CODE ABS >374:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-268 CODE ABS >375:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-269 CODE ABS >376:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-26A CODE ABS >377:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-26B CODE ABS >378:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-26C CODE ABS >379:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-26E CODE ABS >380:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-26F CODE ABS >381:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-271 CODE ABS >382:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-272 CODE ABS >383:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-273 CODE ABS >384:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-274 CODE ABS >387:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-275 CODE ABS >388:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-276 CODE ABS >389:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-277 CODE ABS >390:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-278 CODE ABS >391:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-279 CODE ABS >392:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-27B CODE ABS >393:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-27C CODE ABS >394:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-27E CODE ABS >395:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-27F CODE ABS >396:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-280 CODE ABS >397:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-281 CODE ABS >400:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-282 CODE ABS >401:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-283 CODE ABS >402:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-284 CODE ABS >403:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-285 CODE ABS >404:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-286 CODE ABS >405:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-288 CODE ABS >406:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-289 CODE ABS >407:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-28B CODE ABS >408:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-28C CODE ABS >409:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-28D CODE ABS >410:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-28E CODE ABS >413:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-28F CODE ABS >414:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-290 CODE ABS >415:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-291 CODE ABS >417:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-292 CODE ABS >418:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-293 CODE ABS >419:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
-294 CODE ABS >422:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+52 CODE ABS >213:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+53 CODE ABS >214:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+54 CODE ABS >215:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+55 CODE ABS >216:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+56 CODE ABS >218:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+57 CODE ABS >219:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+58 CODE ABS >220:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+59 CODE ABS >223:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+5A CODE ABS >224:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+5B CODE ABS >225:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+5C CODE ABS >227:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+5D CODE ABS >228:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+5E CODE ABS >229:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+5F CODE ABS >230:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+60 CODE ABS >231:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+61 CODE ABS >233:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+62 CODE ABS >234:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+63 CODE ABS >235:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+64 CODE ABS >238:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+65 CODE ABS >239:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+66 CODE ABS >240:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+67 CODE ABS >241:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+68 CODE ABS >243:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+69 CODE ABS >244:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+6A CODE ABS >245:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+6B CODE ABS >248:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+6C CODE ABS >249:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+6D CODE ABS >250:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+6E CODE ABS >251:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+6F CODE ABS >253:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+70 CODE ABS >254:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+71 CODE ABS >255:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+72 CODE ABS >258:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+73 CODE ABS >261:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+74 CODE ABS >262:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+75 CODE ABS >265:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+76 CODE ABS >268:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+77 CODE ABS >274:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+100 CODE ABS >502:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+101 CODE ABS >503:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+102 CODE ABS >504:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+103 CODE ABS >505:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+104 CODE ABS >506:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+105 CODE ABS >507:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+106 CODE ABS >508:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+107 CODE ABS >509:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+108 CODE ABS >510:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+109 CODE ABS >511:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+10A CODE ABS >512:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+10B CODE ABS >513:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+10C CODE ABS >514:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+200 CODE ABS >280:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+202 CODE ABS >284:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+203 CODE ABS >285:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+204 CODE ABS >286:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+205 CODE ABS >288:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+206 CODE ABS >292:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+208 CODE ABS >294:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+209 CODE ABS >295:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+20A CODE ABS >297:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+20C CODE ABS >299:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+20D CODE ABS >301:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+20E CODE ABS >302:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+20F CODE ABS >303:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+210 CODE ABS >304:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+211 CODE ABS >306:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+212 CODE ABS >307:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+213 CODE ABS >309:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+214 CODE ABS >310:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+215 CODE ABS >311:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+216 CODE ABS >312:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+217 CODE ABS >313:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+218 CODE ABS >315:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+21A CODE ABS >317:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+21B CODE ABS >318:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+21C CODE ABS >319:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+21D CODE ABS >320:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+21E CODE ABS >321:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+21F CODE ABS >323:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+221 CODE ABS >325:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+222 CODE ABS >326:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+223 CODE ABS >327:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+224 CODE ABS >328:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+225 CODE ABS >330:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+226 CODE ABS >331:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+227 CODE ABS >332:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+228 CODE ABS >333:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+229 CODE ABS >334:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+22A CODE ABS >335:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+22B CODE ABS >336:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+22C CODE ABS >337:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+22D CODE ABS >338:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+22E CODE ABS >340:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+230 CODE ABS >342:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+231 CODE ABS >344:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+233 CODE ABS >346:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+234 CODE ABS >348:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+236 CODE ABS >350:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+237 CODE ABS >353:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+239 CODE ABS >355:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+23A CODE ABS >356:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+23B CODE ABS >357:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+23C CODE ABS >358:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+23D CODE ABS >359:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+23E CODE ABS >364:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+240 CODE ABS >366:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+241 CODE ABS >367:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+242 CODE ABS >371:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+243 CODE ABS >372:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+244 CODE ABS >373:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+245 CODE ABS >377:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+247 CODE ABS >379:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+248 CODE ABS >380:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+249 CODE ABS >384:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+24B CODE ABS >386:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+24C CODE ABS >387:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+24D CODE ABS >391:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+24E CODE ABS >392:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+24F CODE ABS >396:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+251 CODE ABS >398:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+252 CODE ABS >399:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+253 CODE ABS >400:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+254 CODE ABS >401:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+255 CODE ABS >405:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+257 CODE ABS >407:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+258 CODE ABS >408:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+259 CODE ABS >409:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+25A CODE ABS >410:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+25B CODE ABS >411:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+25C CODE ABS >413:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+25D CODE ABS >421:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+25E CODE ABS >422:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+25F CODE ABS >423:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+260 CODE ABS >425:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+261 CODE ABS >426:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+262 CODE ABS >428:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+263 CODE ABS >429:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+264 CODE ABS >432:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+265 CODE ABS >434:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+266 CODE ABS >435:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+267 CODE ABS >438:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+268 CODE ABS >439:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+269 CODE ABS >440:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+26A CODE ABS >441:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+26B CODE ABS >442:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+26C CODE ABS >443:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+26E CODE ABS >444:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+26F CODE ABS >445:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+271 CODE ABS >446:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+272 CODE ABS >447:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+273 CODE ABS >448:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+274 CODE ABS >451:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+275 CODE ABS >452:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+276 CODE ABS >453:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+277 CODE ABS >454:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+278 CODE ABS >455:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+279 CODE ABS >456:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+27B CODE ABS >457:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+27C CODE ABS >458:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+27E CODE ABS >459:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+27F CODE ABS >460:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+280 CODE ABS >461:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+281 CODE ABS >464:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+282 CODE ABS >465:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+283 CODE ABS >466:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+284 CODE ABS >467:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+285 CODE ABS >468:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+286 CODE ABS >469:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+288 CODE ABS >470:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+289 CODE ABS >471:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+28B CODE ABS >472:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+28C CODE ABS >473:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+28D CODE ABS >474:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+28E CODE ABS >477:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+28F CODE ABS >478:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+290 CODE ABS >479:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+291 CODE ABS >480:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+292 CODE ABS >481:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+293 CODE ABS >482:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+295 CODE ABS >483:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+296 CODE ABS >484:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+298 CODE ABS >485:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+299 CODE ABS >486:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+29A CODE ABS >487:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+29B CODE ABS >490:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+29C CODE ABS >491:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+29D CODE ABS >492:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+29E CODE ABS >494:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+29F CODE ABS >495:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+2A0 CODE ABS >496:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
+2A1 CODE ABS >499:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.s
 # %SYMTAB Section
 # An enumeration of all symbols in the program.
 # The beginning of the section is indicated by %SYMTAB.
@@ -284,8 +335,8 @@ F CODE ABS >103:C:\Users\byron\OneDrive\Documents\GitHub\Reloj\Proyecto1.X\main.
 # was defined in a psect then <psect> will be "-". File-name
 # is the name of the object file in which the symbol was defined.
 %SYMTAB
-__Hspace_0 294 0 ABS 0 - -
-__Hspace_1 2A 0 ABS 0 - -
+__Hspace_0 2A1 0 ABS 0 - -
+__Hspace_1 2B 0 ABS 0 - -
 __Hspace_3 0 0 ABS 0 - -
 __Hspace_4 4010 0 ABS 0 - -
 __Hudata_bank0 0 0 ABS 0 udata_bank0 -
@@ -297,14 +348,14 @@ __Hudata 0 0 ABS 0 udata -
 __Hconfig 4012 0 CONFIG 4 config -
 __Ledata 0 0 ABS 0 edata -
 __Ludata 0 0 ABS 0 udata -
-__HCODE 528 0 ABS 0 CODE -
+__HCODE 542 0 ABS 0 CODE -
 __Hcode 0 0 ABS 0 code -
 __Hdata 0 0 ABS 0 data -
 __LCODE 0 0 ABS 0 CODE -
 __Lcode 0 0 ABS 0 code -
 __Ldata 0 0 ABS 0 data -
 __S0 0 0 ABS 0 - -
-__S1 2A 0 ABS 0 - -
+__S1 2B 0 ABS 0 - -
 __S3 0 0 ABS 0 - -
 __Lconfig 0 0 CONFIG 4 config -
 __Lspace_0 0 0 ABS 0 - -
@@ -341,7 +392,7 @@ __Ludata_shr 0 0 ABS 0 udata_shr -
 # and size are in units of delta. The file address is in units of bytes.
 # All other numeric quantities are in decimal.
 %SEGMENTS
-udata_bank0 1 20 20 A 1
+udata_bank0 1 20 20 B 1
 # %NOTES Section
 # This section contains data of all the note-psects.  The beginning of the section
 # is indicated by %NOTES. The first line indicates the name and decimal
