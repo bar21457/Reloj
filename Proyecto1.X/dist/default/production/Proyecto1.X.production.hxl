@@ -11,13 +11,13 @@
   0h - 1h		(dist/default/production\Proyecto1.X.production.hex)
   8h - EFh		(dist/default/production\Proyecto1.X.production.hex)
   200h - 219h		(dist/default/production\Proyecto1.X.production.hex)
-  400h - 541h		(dist/default/production\Proyecto1.X.production.hex)
+  400h - 5A1h		(dist/default/production\Proyecto1.X.production.hex)
   400Eh - 4011h		(dist/default/production\Proyecto1.X.production.hex)
  Unused ranges:
   2h - 7h
   F0h - 1FFh
   21Ah - 3FFh
-  542h - 400Dh
+  5A2h - 400Dh
 
 ### Hex Memory Map ###
  Legend:
@@ -65,7 +65,13 @@
 00000510 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00000520 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00000530 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
-00000540 | H1 H1 -- -- -- -- -- -- -- -- -- -- -- -- -- --
+00000540 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00000550 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00000560 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00000570 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00000580 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00000590 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+000005A0 | H1 H1 -- -- -- -- -- -- -- -- -- -- -- -- -- --
 ----------------------------------------------------------
 00004000 | -- -- -- -- -- -- -- -- -- -- -- -- -- -- H1 H1
 00004010 | H1 H1 -- -- -- -- -- -- -- -- -- -- -- -- -- --

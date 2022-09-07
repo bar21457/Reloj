@@ -2548,7 +2548,7 @@ ISR_RBIF:
 INC_ESTADO:
     incf ESTADO, F ; Incrementamos en 1 el valor de ESTADO
     movf ESTADO, W ; Copia el valor de ESTADO a W
-    sublw 5 ; Restamos "6 - W"
+    sublw 5 ; Restamos "5 - W"
     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
    ; clrf ESTADO
     clrf ESTADO ; Limpiamos ESTADO
@@ -2870,8 +2870,75 @@ MAIN:
 ;*******************************************************************************
 
 LOOP:
-    movf ESTADO, W
-    movwf PORTE
+
+SEL_ESTADO:
+    movf ESTADO, W ; Copia el valor de ESTADO a W
+    sublw 0 ; Restamos "0 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto ESTADO0
+    goto ESTADO0
+    movf ESTADO, W ; Copia el valor de ESTADO a W
+    sublw 1 ; Restamos "1 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto ESTADO1
+    goto ESTADO1
+    movf ESTADO, W ; Copia el valor de ESTADO a W
+    sublw 2 ; Restamos "2 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto ESTADO2
+    goto ESTADO2
+    movf ESTADO, W ; Copia el valor de ESTADO a W
+    sublw 3 ; Restamos "3 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto ESTADO3
+    goto ESTADO3
+    movf ESTADO, W ; Copia el valor de ESTADO a W
+    sublw 4 ; Restamos "4 - W"
+    btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
+   ; goto ESTADO4
+    goto ESTADO4
+
+ESTADO0:
+    bsf TRISA, 0 ; Encendemos LED que indica el modo HRS
+    bcf TRISA, 1 ; Apagamos LED que indica el modo FCH
+    bcf TRISA, 2 ; Apagamos LED que indica el modo CONF. H
+    bcf TRISA, 3 ; Apagamos LED que indica el modo CONF. F
+    bcf TRISA, 4 ; Apagamos LED que indica el modo CONF. ALRM
+    goto CHECK_X
+
+ESTADO1:
+    bcf TRISA, 0 ; Apagamos LED que indica el modo HRS
+    bsf TRISA, 1 ; Encendemos LED que indica el modo FCH
+    bcf TRISA, 2 ; Apagamos LED que indica el modo CONF. H
+    bcf TRISA, 3 ; Apagamos LED que indica el modo CONF. F
+    bcf TRISA, 4 ; Apagamos LED que indica el modo CONF. ALRM
+    goto CHECK_X
+
+ESTADO2:
+    bcf TRISA, 0 ; Apagamos LED que indica el modo HRS
+    bcf TRISA, 1 ; Apagamos LED que indica el modo FCH
+    bsf TRISA, 2 ; Encendemos LED que indica el modo CONF. H
+    bcf TRISA, 3 ; Apagamos LED que indica el modo CONF. F
+    bcf TRISA, 4 ; Apagamos LED que indica el modo CONF. ALRM
+    goto CHECK_X
+
+ESTADO3:
+    bcf TRISA, 0 ; Apagamos LED que indica el modo HRS
+    bcf TRISA, 1 ; Apagamos LED que indica el modo FCH
+    bcf TRISA, 2 ; Apagamos LED que indica el modo CONF. H
+    bsf TRISA, 3 ; Encendemos LED que indica el modo CONF. F
+    bcf TRISA, 4 ; Apagamos LED que indica el modo CONF. ALRM
+    goto CHECK_X
+
+ESTADO4:
+    bcf TRISA, 0 ; Apagamos LED que indica el modo HRS
+    bcf TRISA, 1 ; Apagamos LED que indica el modo FCH
+    bcf TRISA, 2 ; Apagamos LED que indica el modo CONF. H
+    bcf TRISA, 3 ; Apagamos LED que indica el modo CONF. F
+    bsf TRISA, 4 ; Encendemos LED que indica el modo CONF. ALRM
+    goto CHECK_X
+
+CHECK_X:
     btfss DISP, 0 ; Si el valor del bit 0 de DISP es 1, se salta el
    ; goto CHECK_Y
     goto CHECK_Y
