@@ -2828,35 +2828,39 @@ MAIN:
 
 LOOP:
 
-SEL_ESTADO:
+CHECK_E0:
     movf ESTADO, W ; Copia el valor de ESTADO a W
     ;sublw 0 ; Restamos "0 - W"
     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-    goto CHECKE1 ; goto ESTADO0_ISR
+    goto CHECK_E1 ; CHECK_E1
     goto ESTADO0
-CHECKE1:
+
+CHECK_E1:
     movf ESTADO, W ; Copia el valor de ESTADO a W
     sublw 1 ; Restamos "1 - W"
     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-    goto CHECKE2 ; goto ESTADO1_ISR
+    goto CHECK_E2 ; goto CHECK_E2
     goto ESTADO1
-CHECKE2:
+
+CHECK_E2:
     movf ESTADO, W ; Copia el valor de ESTADO a W
     sublw 2 ; Restamos "2 - W"
     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-    goto CHECKE3 ; goto ESTADO2_ISR
+    goto CHECK_E3 ; goto CHECK_E3
     goto ESTADO2
-CHECKE3:
+
+CHECK_E3:
     movf ESTADO, W ; Copia el valor de ESTADO a W
     sublw 3 ; Restamos "3 - W"
     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-    goto CHECKE4 ; goto ESTADO3_ISR
+    goto CHECK_E4 ; goto CHECK_E4
     goto ESTADO3
-CHECKE4:
+
+CHECK_E4:
     movf ESTADO, W ; Copia el valor de ESTADO a W
     sublw 4 ; Restamos "4 - W"
     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-    goto CHECK_H ; goto ESTADO4_ISR
+    goto CHECK_TIEMPO ; goto CHECK_TIEMPO
     goto ESTADO4
 
 ESTADO0:
@@ -2865,7 +2869,7 @@ ESTADO0:
     bcf TRISA, 2 ; Apagamos LED que indica el modo CONF. H
     bcf TRISA, 3 ; Apagamos LED que indica el modo CONF. F
     bcf TRISA, 4 ; Apagamos LED que indica el modo CONF. ALRM
-    goto CHECK_H
+    goto CHECK_TIEMPO
 
 ESTADO1:
     bcf TRISA, 0 ; Apagamos LED que indica el modo HRS
@@ -2873,7 +2877,7 @@ ESTADO1:
     bcf TRISA, 2 ; Apagamos LED que indica el modo CONF. H
     bcf TRISA, 3 ; Apagamos LED que indica el modo CONF. F
     bcf TRISA, 4 ; Apagamos LED que indica el modo CONF. ALRM
-    goto CHECK_H
+    goto CHECK_TIEMPO
 
 ESTADO2:
     bcf TRISA, 0 ; Apagamos LED que indica el modo HRS
@@ -2881,7 +2885,7 @@ ESTADO2:
     bsf TRISA, 2 ; Encendemos LED que indica el modo CONF. H
     bcf TRISA, 3 ; Apagamos LED que indica el modo CONF. F
     bcf TRISA, 4 ; Apagamos LED que indica el modo CONF. ALRM
-    goto CHECK_H
+    goto CHECK_TIEMPO
 
 ESTADO3:
     bcf TRISA, 0 ; Apagamos LED que indica el modo HRS
@@ -2889,7 +2893,7 @@ ESTADO3:
     bcf TRISA, 2 ; Apagamos LED que indica el modo CONF. H
     bsf TRISA, 3 ; Encendemos LED que indica el modo CONF. F
     bcf TRISA, 4 ; Apagamos LED que indica el modo CONF. ALRM
-    goto CHECK_H
+    goto CHECK_TIEMPO
 
 ESTADO4:
     bcf TRISA, 0 ; Apagamos LED que indica el modo HRS
@@ -2898,7 +2902,7 @@ ESTADO4:
     bcf TRISA, 3 ; Apagamos LED que indica el modo CONF. F
     bsf TRISA, 4 ; Encendemos LED que indica el modo CONF. ALRM
 
-CHECK_H:
+CHECK_TIEMPO:
     call CHECKSEG
     call CHECKMIN
     call CHECKHOR
@@ -2985,8 +2989,8 @@ CHECKSEG:
  ;incf U_SEG, F ; Incrementamos en 1 el valor de U_SEG
  movf U_SEG, W ; Movemos el valor de U_SEG a W
  sublw 10 ; Restamos "10 - W"
- btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-    ; goto POP
+ btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
+    ; se salta el return
  return
  clrf U_SEG ; Limpiamos U_SEG
  ;goto INC_D_SEG
@@ -2995,12 +2999,11 @@ CHECKSEG:
  incf D_SEG, F ; Incrementamos en 1 el valor de D_SEG
  movf D_SEG, W ; Movemos el valor de D_SEG a W
  sublw 6 ; Restamos "6 - W"
- btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-    ; goto POP
+ btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
+    ; se salta el return
  return
  clrf D_SEG ; Limpiamos D_SEG
  incf U_MIN, F ; Incrementamos en 1 el valor de U_MIN
-
  call CHECKMIN
  return
  ;goto INC_U_MIN
@@ -3010,8 +3013,8 @@ CHECKMIN:
     INC_U_MIN:
  movf U_MIN, W ; Movemos el valor de U_MIN a W
  sublw 10 ; Restamos "10 - W"
- btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-    ; goto POP
+ btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
+    ; se salta el return
  return
  clrf U_MIN ; Limpiamos U_MIN
  ;goto INC_D_MIN
@@ -3020,25 +3023,27 @@ CHECKMIN:
  incf D_MIN, F ; Incrementamos en 1 el valor de D_MIN
  movf D_MIN, W ; Movemos el valor de D_MIN a W
  sublw 6 ; Restamos "6 - W"
- btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-    ; goto POP
+ btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
+    ; se salta el return
  return
  clrf D_MIN ; Limpiamos D_MIN
- incf U_HOR
- call CHECKHOR ;goto INC_U_HOR
+ incf U_HOR ; Incrementamos en 1 el valor de U_HOR
+ call CHECKHOR
  return
+
 CHECKHOR:
+
  movf D_HOR, W ; Movemos el valor de D_HOR a W
  sublw 2 ; Restamos "2 - W"
- btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-       ; goto INC_U_HOR_2
+ btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
+    ; se salta el INC_U_HOR
  goto INC_U_HOR
  goto INC_U_HOR_2
     INC_U_HOR:
  movf U_HOR, W ; Movemos el valor de U_HOR a W
  sublw 10 ; Restamos "10 - W"
- btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-       ; goto POP
+ btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
+    ; se salta el return
  return
  clrf U_HOR ; Limpiamos U_HOR
  goto INC_D_HOR
@@ -3047,19 +3052,19 @@ CHECKHOR:
  ;incf U_HOR, F ; Incrementamos en 1 el valor de U_HOR
  movf U_HOR, W ; Movemos el valor de U_HOR a W
  sublw 4 ; Restamos "4 - W"
- btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-       ; goto POP
+ btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
+    ; se salta el return
  return
  clrf U_HOR ; Limpiamos U_HOR
- clrf D_HOR
+ clrf D_HOR ; Limpiamos D_HOR
  return
 
     INC_D_HOR:
  incf D_HOR, F ; Incrementamos en 1 el valor de D_HOR
  ;movf D_HOR, W ; Movemos el valor de D_HOR a W
  ;sublw 3 ; Restamos "6 - W"
- ;btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-       ; goto POP
+ ;btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
+    ; se salta el return
  ;return
  ;clrf D_HOR ; Limpiamos D_HOR
  return
