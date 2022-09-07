@@ -2540,9 +2540,12 @@ ISR_RBIF:
     btfss INTCON, 0 ; Revisa la bandera de interrupción de ((INTCON) and 07Fh), 0, si vale 1,
                         ; se salta el goto ISR_TMR0
     goto ISR_TMR0
-    btfsc PORTB, 4 ; Revisa si el bit 4 del PORTB está en 0, si vale 0,
+    btfss PORTB, 4 ; Revisa si el bit 4 del PORTB está en 0, si vale 0,
    ; se salta el goto CHECK_ESTADOS
+    goto INC_ESTADO
     goto SEL_ESTADO_ISR
+
+INC_ESTADO:
     incf ESTADO, F ; Incrementamos en 1 el valor de ESTADO
     movf ESTADO, W ; Copia el valor de ESTADO a W
     sublw 5 ; Restamos "6 - W"
