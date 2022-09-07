@@ -100,38 +100,42 @@ INC_ESTADO:
     incf ESTADO, F	; Incrementamos en 1 el valor de ESTADO
     movf ESTADO, W	; Copia el valor de ESTADO a W
     sublw 5		; Restamos "5 - W"
-    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
+    btfsc STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
 			; clrf ESTADO
     clrf ESTADO		; Limpiamos ESTADO
     bcf INTCON, 0	; Baja la bandera que indica una interrupción en 
                         ; el RBIF
-    goto ISR_TMR0
+    ;goto ISR_TMR0
     
 SEL_ESTADO_ISR:
     movf ESTADO, W	; Copia el valor de ESTADO a W
-    sublw 0		; Restamos "0 - W"
+    ;sublw 0		; Restamos "0 - W"
     btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto ESTADO0_ISR
+    goto CHECKE1_ISR			; goto ESTADO0_ISR
     goto ESTADO0_ISR
+CHECKE1_ISR:    
     movf ESTADO, W	; Copia el valor de ESTADO a W
     sublw 1		; Restamos "1 - W"
     btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto ESTADO1_ISR
+    goto CHECKE2_ISR		; goto ESTADO1_ISR
     goto ESTADO1_ISR
+CHECKE2_ISR:
     movf ESTADO, W	; Copia el valor de ESTADO a W
     sublw 2		; Restamos "2 - W"
     btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto ESTADO2_ISR
+    goto CHECKE3_ISR			; goto ESTADO2_ISR
     goto ESTADO2_ISR
+CHECKE3_ISR:
     movf ESTADO, W	; Copia el valor de ESTADO a W
     sublw 3		; Restamos "3 - W"
     btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto ESTADO3_ISR
+    goto CHECKE4_ISR			; goto ESTADO3_ISR
     goto ESTADO3_ISR
+CHECKE4_ISR:    
     movf ESTADO, W	; Copia el valor de ESTADO a W
     sublw 4		; Restamos "4 - W"
     btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto ESTADO4_ISR
+    goto ISR_TMR0			; goto ESTADO4_ISR
     goto ESTADO4_ISR
     
 ESTADO0_ISR:
@@ -147,6 +151,33 @@ ESTADO1_ISR:
 ESTADO2_ISR:
     bcf INTCON, 0	; Baja la bandera que indica una interrupción en 
                         ; el RBIF
+			
+    btfsc PORTB, 0      ; Revisa si el bit 0 del PORTB está en 0, si vale 0,
+			; se salta el goto
+    goto BTN1_E2
+    incf U_HOR, F
+    
+    goto ISR_TMR0
+ 
+BTN1_E2:    
+    btfsc PORTB, 1      ; Revisa si el bit 1 del PORTB está en 0, si vale 0,
+			; se salta el goto
+    goto BTN2_E2
+    decf U_HOR, F
+    goto ISR_TMR0
+    
+BTN2_E2:
+    btfsc PORTB, 2      ; Revisa si el bit 2 del PORTB está en 0, si vale 0,
+			; se salta el goto
+    goto BTN3_E2
+    incf U_MIN, F
+    goto ISR_TMR0
+    
+BTN3_E2:
+    btfsc PORTB, 3      ; Revisa si el bit 3 del PORTB está en 0, si vale 0,
+			; se salta el goto
+    goto ISR_TMR0
+    decf U_MIN, F
     goto ISR_TMR0
     
 ESTADO3_ISR:
@@ -180,82 +211,8 @@ ISR_TMR1:
     movwf TMR1L         ; Cargamos W a TMR1L
     movlw 0x85		; Cargamos 0x85 a W
     movwf TMR1H         ; Cargamos W a TMR1H
+    incf U_SEG, F
     ;goto INC_U_SEG
-    
-INC_U_SEG:
-    incf U_SEG, F	; Incrementamos en 1 el valor de U_SEG
-    movf U_SEG, W	; Movemos el valor de U_SEG a W
-    sublw 10		; Restamos "10 - W"
-    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto POP
-    goto POP		
-    clrf U_SEG		; Limpiamos U_SEG
-    goto INC_D_SEG
-
-INC_D_SEG:
-    incf D_SEG, F	; Incrementamos en 1 el valor de D_SEG
-    movf D_SEG, W	; Movemos el valor de D_SEG a W
-    sublw 6		; Restamos "6 - W"
-    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto POP
-    goto POP
-    clrf D_SEG		; Limpiamos D_SEG
-    goto INC_U_MIN
-
-INC_U_MIN:
-    incf U_MIN, F	; Incrementamos en 1 el valor de U_MIN
-    movf U_MIN, W	; Movemos el valor de U_MIN a W
-    sublw 10		; Restamos "10 - W"
-    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto POP
-    goto POP
-    clrf U_MIN		; Limpiamos U_MIN
-    goto INC_D_MIN
-
-INC_D_MIN:
-    incf D_MIN, F	; Incrementamos en 1 el valor de D_MIN
-    movf D_MIN, W	; Movemos el valor de D_MIN a W
-    sublw 6		; Restamos "6 - W"
-    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto POP
-    goto POP
-    clrf D_MIN		; Limpiamos D_MIN
-    goto INC_U_HOR
-
-INC_U_HOR:
-    movf D_HOR, W	; Movemos el valor de D_HOR a W
-    sublw 2		; Restamos "2 - W"
-    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto INC_U_HOR_2
-    goto INC_U_HOR_2
-    incf U_HOR, F	; Incrementamos en 1 el valor de U_HOR
-    movf U_HOR, W	; Movemos el valor de U_HOR a W
-    sublw 10		; Restamos "10 - W"
-    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto POP
-    goto POP
-    clrf U_HOR		; Limpiamos U_HOR
-    goto INC_D_HOR
-
-INC_U_HOR_2:
-    incf U_HOR, F	; Incrementamos en 1 el valor de U_HOR
-    movf U_HOR, W	; Movemos el valor de U_HOR a W
-    sublw 5		; Restamos "5 - W"
-    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto POP
-    goto POP
-    clrf U_HOR		; Limpiamos U_HOR
-    goto INC_D_HOR
-
-INC_D_HOR:
-    incf D_HOR, F	; Incrementamos en 1 el valor de D_HOR
-    movf D_HOR, W	; Movemos el valor de D_HOR a W
-    sublw 3		; Restamos "6 - W"
-    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto POP
-    goto POP
-    clrf D_HOR		; Limpiamos D_HOR
-    goto POP
    
 POP:
     swapf STATUS_TEMP, W  ; Se intercambian el nibble más significativo y el
@@ -424,29 +381,33 @@ LOOP:
     
 SEL_ESTADO:
     movf ESTADO, W	; Copia el valor de ESTADO a W
-    sublw 0		; Restamos "0 - W"
+    ;sublw 0		; Restamos "0 - W"
     btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto ESTADO0
+    goto CHECKE1			; goto ESTADO0_ISR
     goto ESTADO0
+CHECKE1:    
     movf ESTADO, W	; Copia el valor de ESTADO a W
     sublw 1		; Restamos "1 - W"
     btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto ESTADO1
+    goto CHECKE2		; goto ESTADO1_ISR
     goto ESTADO1
+CHECKE2:
     movf ESTADO, W	; Copia el valor de ESTADO a W
     sublw 2		; Restamos "2 - W"
     btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto ESTADO2
+    goto CHECKE3			; goto ESTADO2_ISR
     goto ESTADO2
+CHECKE3:
     movf ESTADO, W	; Copia el valor de ESTADO a W
     sublw 3		; Restamos "3 - W"
     btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto ESTADO3
+    goto CHECKE4			; goto ESTADO3_ISR
     goto ESTADO3
+CHECKE4:    
     movf ESTADO, W	; Copia el valor de ESTADO a W
     sublw 4		; Restamos "4 - W"
     btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
-			; goto ESTADO4
+    goto CHECK_H			; goto ESTADO4_ISR
     goto ESTADO4
     
 ESTADO0:
@@ -455,7 +416,7 @@ ESTADO0:
     bcf TRISA, 2	; Apagamos LED que indica el modo CONF. H
     bcf TRISA, 3	; Apagamos LED que indica el modo CONF. F
     bcf TRISA, 4	; Apagamos LED que indica el modo CONF. ALRM
-    goto CHECK_X
+    goto CHECK_H
 
 ESTADO1:
     bcf TRISA, 0	; Apagamos LED que indica el modo HRS
@@ -463,7 +424,7 @@ ESTADO1:
     bcf TRISA, 2	; Apagamos LED que indica el modo CONF. H
     bcf TRISA, 3	; Apagamos LED que indica el modo CONF. F
     bcf TRISA, 4	; Apagamos LED que indica el modo CONF. ALRM
-    goto CHECK_X
+    goto CHECK_H
 
 ESTADO2:
     bcf TRISA, 0	; Apagamos LED que indica el modo HRS
@@ -471,7 +432,7 @@ ESTADO2:
     bsf TRISA, 2	; Encendemos LED que indica el modo CONF. H
     bcf TRISA, 3	; Apagamos LED que indica el modo CONF. F
     bcf TRISA, 4	; Apagamos LED que indica el modo CONF. ALRM
-    goto CHECK_X
+    goto CHECK_H
     
 ESTADO3:
     bcf TRISA, 0	; Apagamos LED que indica el modo HRS
@@ -479,7 +440,7 @@ ESTADO3:
     bcf TRISA, 2	; Apagamos LED que indica el modo CONF. H
     bsf TRISA, 3	; Encendemos LED que indica el modo CONF. F
     bcf TRISA, 4	; Apagamos LED que indica el modo CONF. ALRM
-    goto CHECK_X
+    goto CHECK_H
 
 ESTADO4:
     bcf TRISA, 0	; Apagamos LED que indica el modo HRS
@@ -487,7 +448,11 @@ ESTADO4:
     bcf TRISA, 2	; Apagamos LED que indica el modo CONF. H
     bcf TRISA, 3	; Apagamos LED que indica el modo CONF. F
     bsf TRISA, 4	; Encendemos LED que indica el modo CONF. ALRM
-    goto CHECK_X
+    
+CHECK_H:    
+    call CHECKSEG
+    call CHECKMIN
+    call CHECKHOR
     
 CHECK_X:
     btfss DISP, 0	; Si el valor del bit 0 de DISP es 1, se salta el
@@ -564,6 +529,91 @@ VERIFICACION:
     goto VERIFICACION
     clrf CONT_1MS	; Limpiamos CONT_1MS
     goto LOOP
+    
+CHECKSEG:
+        
+    INC_U_SEG:
+	;incf U_SEG, F	; Incrementamos en 1 el valor de U_SEG
+	movf U_SEG, W		; Movemos el valor de U_SEG a W
+	sublw 10		; Restamos "10 - W"
+	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0, se salta el
+				; goto POP
+	return		
+	clrf U_SEG		; Limpiamos U_SEG
+	;goto INC_D_SEG
+
+    INC_D_SEG:
+	incf D_SEG, F		; Incrementamos en 1 el valor de D_SEG
+	movf D_SEG, W		; Movemos el valor de D_SEG a W
+	sublw 6			; Restamos "6 - W"
+	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0, se salta el
+				; goto POP
+	return
+	clrf D_SEG		; Limpiamos D_SEG
+	incf U_MIN, F		; Incrementamos en 1 el valor de U_MIN
+	
+	call CHECKMIN
+	return
+	;goto INC_U_MIN
+	
+CHECKMIN:
+
+    INC_U_MIN:
+	movf U_MIN, W		; Movemos el valor de U_MIN a W
+	sublw 10	   	; Restamos "10 - W"
+	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0, se salta el
+				; goto POP
+	return
+	clrf U_MIN		; Limpiamos U_MIN
+	;goto INC_D_MIN
+
+    INC_D_MIN:
+	incf D_MIN, F		; Incrementamos en 1 el valor de D_MIN
+	movf D_MIN, W		; Movemos el valor de D_MIN a W
+	sublw 6			; Restamos "6 - W"
+	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0, se salta el
+				; goto POP
+	return
+	clrf D_MIN		; Limpiamos D_MIN
+	incf U_HOR
+	call CHECKHOR ;goto INC_U_HOR
+	return
+CHECKHOR:
+	movf D_HOR, W	; Movemos el valor de D_HOR a W
+	sublw 2		; Restamos "2 - W"
+	btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
+			    ; goto INC_U_HOR_2
+	goto INC_U_HOR
+	goto INC_U_HOR_2
+    INC_U_HOR:
+	movf U_HOR, W	; Movemos el valor de U_HOR a W
+	sublw 10		; Restamos "10 - W"
+	btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
+			    ; goto POP
+	return
+	clrf U_HOR		; Limpiamos U_HOR
+	goto INC_D_HOR
+
+    INC_U_HOR_2:
+	;incf U_HOR, F	; Incrementamos en 1 el valor de U_HOR
+	movf U_HOR, W	; Movemos el valor de U_HOR a W
+	sublw 4		; Restamos "4 - W"
+	btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
+			    ; goto POP
+	return
+	clrf U_HOR		; Limpiamos U_HOR
+	clrf D_HOR
+	return
+	
+    INC_D_HOR:
+	incf D_HOR, F	; Incrementamos en 1 el valor de D_HOR
+	;movf D_HOR, W	; Movemos el valor de D_HOR a W
+	;sublw 3		; Restamos "6 - W"
+	;btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
+			    ; goto POP
+	;return
+	;clrf D_HOR		; Limpiamos D_HOR
+	return
     
 PSECT CODE, ABS, DELTA=2
  ORG 0x100
