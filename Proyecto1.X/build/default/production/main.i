@@ -2541,7 +2541,7 @@ ISR_RBIF:
                         ; se salta el goto ISR_TMR0
     goto ISR_TMR0
     btfss PORTB, 4 ; Revisa si el bit 4 del PORTB está en 0, si vale 0,
-   ; se salta el goto CHECK_ESTADOS
+   ; se salta el goto INC_ESTADOS
     goto INC_ESTADO
     goto SEL_ESTADO_ISR
 
@@ -2554,37 +2554,45 @@ INC_ESTADO:
     clrf ESTADO ; Limpiamos ESTADO
     bcf INTCON, 0 ; Baja la bandera que indica una interrupción en
                         ; el ((INTCON) and 07Fh), 0
-    ;goto ISR_TMR0
 
 SEL_ESTADO_ISR:
     movf ESTADO, W ; Copia el valor de ESTADO a W
     ;sublw 0 ; Restamos "0 - W"
     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-    goto CHECKE1_ISR ; goto ESTADO0_ISR
+   ; goto CHECKE1_ISR
+    goto CHECKE1_ISR
     goto ESTADO0_ISR
+
 CHECKE1_ISR:
     movf ESTADO, W ; Copia el valor de ESTADO a W
     sublw 1 ; Restamos "1 - W"
     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-    goto CHECKE2_ISR ; goto ESTADO1_ISR
+   ; goto CHECKE2_ISR
+    goto CHECKE2_ISR
     goto ESTADO1_ISR
+
 CHECKE2_ISR:
     movf ESTADO, W ; Copia el valor de ESTADO a W
     sublw 2 ; Restamos "2 - W"
     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-    goto CHECKE3_ISR ; goto ESTADO2_ISR
+   ; goto CHECKE3_ISR
+    goto CHECKE3_ISR
     goto ESTADO2_ISR
+
 CHECKE3_ISR:
     movf ESTADO, W ; Copia el valor de ESTADO a W
     sublw 3 ; Restamos "3 - W"
     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-    goto CHECKE4_ISR ; goto ESTADO3_ISR
+   ; goto CHECKE4_ISR
+    goto CHECKE4_ISR
     goto ESTADO3_ISR
+
 CHECKE4_ISR:
     movf ESTADO, W ; Copia el valor de ESTADO a W
     sublw 4 ; Restamos "4 - W"
     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
-    goto ISR_TMR0 ; goto ESTADO4_ISR
+   ; goto ISR_TMR0
+    goto ISR_TMR0
     goto ESTADO4_ISR
 
 ESTADO0_ISR:
@@ -2600,19 +2608,17 @@ ESTADO1_ISR:
 ESTADO2_ISR:
     bcf INTCON, 0 ; Baja la bandera que indica una interrupción en
                         ; el ((INTCON) and 07Fh), 0
-
     btfsc PORTB, 0 ; Revisa si el bit 0 del PORTB está en 0, si vale 0,
-   ; se salta el goto
+   ; se salta el goto BTN1_E2
     goto BTN1_E2
-    incf U_HOR, F
-
+    incf U_HOR, F ; Se incrementa en 1 el valor de U_HOR
     goto ISR_TMR0
 
 BTN1_E2:
     btfsc PORTB, 1 ; Revisa si el bit 1 del PORTB está en 0, si vale 0,
    ; se salta el goto
     goto BTN2_E2
-    decf U_HOR, F
+    decf U_HOR, F ; Se decrementa en 1 el valor de U_HOR
     goto ISR_TMR0
 
 BTN2_E2:
@@ -2626,7 +2632,7 @@ BTN3_E2:
     btfsc PORTB, 3 ; Revisa si el bit 3 del PORTB está en 0, si vale 0,
    ; se salta el goto
     goto ISR_TMR0
-    decf U_MIN, F
+    decf U_MIN, F ; Se decrementa en 1 el valor de U_MIN
     goto ISR_TMR0
 
 ESTADO3_ISR:
@@ -2648,7 +2654,6 @@ ISR_TMR0:
     movlw 240 ; Cargamos 240 a W
     movwf TMR0 ; Cargamos W a TMR0
     incf CONT_1MS, F ; Incrementamos en 1 el valor de CONT_1MS
-    ;goto ISR_TMR1
 
 ISR_TMR1:
     btfss PIR1, 0 ; Revisa la bandera de interrupción de TMR1, si vale 1,
@@ -2661,7 +2666,6 @@ ISR_TMR1:
     movlw 0x85 ; Cargamos 0x85 a W
     movwf TMR1H ; Cargamos W a TMR1H
     incf U_SEG, F
-    ;goto INC_U_SEG
 
 POP:
     swapf STATUS_TEMP, W ; Se intercambian el nibble más significativo y el
@@ -2830,7 +2834,6 @@ LOOP:
 
 CHECK_E0:
     movf ESTADO, W ; Copia el valor de ESTADO a W
-    ;sublw 0 ; Restamos "0 - W"
     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0, se salta el
     goto CHECK_E1 ; CHECK_E1
     goto ESTADO0
@@ -2971,7 +2974,7 @@ DISP3:
     call TABLA
     PAGESEL DISP3
     movwf PORTD ; Se carga W a PORTD
-    clrf DISP
+    clrf DISP ; Limpiamos DISP
     goto VERIFICACION
 
 VERIFICACION:
@@ -2986,14 +2989,12 @@ VERIFICACION:
 CHECKSEG:
 
     INC_U_SEG:
- ;incf U_SEG, F ; Incrementamos en 1 el valor de U_SEG
  movf U_SEG, W ; Movemos el valor de U_SEG a W
  sublw 10 ; Restamos "10 - W"
  btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
     ; se salta el return
  return
  clrf U_SEG ; Limpiamos U_SEG
- ;goto INC_D_SEG
 
     INC_D_SEG:
  incf D_SEG, F ; Incrementamos en 1 el valor de D_SEG
@@ -3006,7 +3007,6 @@ CHECKSEG:
  incf U_MIN, F ; Incrementamos en 1 el valor de U_MIN
  call CHECKMIN
  return
- ;goto INC_U_MIN
 
 CHECKMIN:
 
@@ -3017,7 +3017,6 @@ CHECKMIN:
     ; se salta el return
  return
  clrf U_MIN ; Limpiamos U_MIN
- ;goto INC_D_MIN
 
     INC_D_MIN:
  incf D_MIN, F ; Incrementamos en 1 el valor de D_MIN
@@ -3039,7 +3038,8 @@ CHECKHOR:
     ; se salta el INC_U_HOR
  goto INC_U_HOR
  goto INC_U_HOR_2
-    INC_U_HOR:
+
+INC_U_HOR:
  movf U_HOR, W ; Movemos el valor de U_HOR a W
  sublw 10 ; Restamos "10 - W"
  btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
@@ -3049,7 +3049,6 @@ CHECKHOR:
  goto INC_D_HOR
 
     INC_U_HOR_2:
- ;incf U_HOR, F ; Incrementamos en 1 el valor de U_HOR
  movf U_HOR, W ; Movemos el valor de U_HOR a W
  sublw 4 ; Restamos "4 - W"
  btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
@@ -3061,12 +3060,6 @@ CHECKHOR:
 
     INC_D_HOR:
  incf D_HOR, F ; Incrementamos en 1 el valor de D_HOR
- ;movf D_HOR, W ; Movemos el valor de D_HOR a W
- ;sublw 3 ; Restamos "6 - W"
- ;btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
-    ; se salta el return
- ;return
- ;clrf D_HOR ; Limpiamos D_HOR
  return
 
 PSECT CODE, ABS, DELTA=2
