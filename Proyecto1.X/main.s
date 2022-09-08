@@ -511,6 +511,7 @@ CHECK_TIEMPO:
     call CHECK_MIN
     call CHECK_HOR
     call CHECK_DIA
+    call CHECK_MES
     
 CHECK_DISP_E0:
     movf ESTADO, W	; Copia el valor de ESTADO a W
@@ -638,7 +639,7 @@ DISP0_E1_E3:
     bcf TRISC, 1	; Apagamos DISP1
     bcf TRISC, 2	; Apagamos DISP2
     bcf TRISC, 3	; Apagamos DISP3
-    movf U_MIN, W	; Copia el valor de U_MIN a W
+    movf U_MES, W	; Copia el valor de U_MES a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP0_E1_E3
@@ -651,7 +652,7 @@ DISP1_E1_E3:
     bsf TRISC, 1	; Encendemos DISP1
     bcf TRISC, 2	; Apagamos DISP2
     bcf TRISC, 3	; Apagamos DISP3
-    movf D_MIN, W	; Copia el valor de D_MIN a W
+    movf D_MES, W	; Copia el valor de D_MES a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP1_E1_E3
@@ -664,7 +665,7 @@ DISP2_E1_E3:
     bcf TRISC, 1	; Apagamos DISP1
     bsf TRISC, 2	; Encendemos DISP2
     bcf TRISC, 3	; Apagamos DISP3
-    movf U_HOR, W	; Copia el valor de U_HOR a W
+    movf U_DIA, W	; Copia el valor de U_HOR a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP2_E1_E3
@@ -677,7 +678,7 @@ DISP3_E1_E3:
     bcf TRISC, 1	; Apagamos DISP1
     bcf TRISC, 2	; Apagamos DISP2
     bsf TRISC, 3	; Encendemos DISP3
-    movf D_HOR, W	; Copia el valor de D_HOR a W
+    movf D_DIA, W	; Copia el valor de D_HOR a W
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP3_E1_E3
