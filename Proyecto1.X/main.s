@@ -76,6 +76,14 @@ D_MES:
     DS 1
 MES:
     DS 1
+U_MIN_ALRM:
+    DS 1
+D_MIN_ALRM:
+    DS 1
+U_HOR_ALRM:
+    DS 1
+D_HOR_ALRM:
+    DS 1
 
 ;******************************************************************************* 
 ; Vector Reset    
@@ -188,7 +196,7 @@ ESTADO2_ISR:
 	btfsc PORTB, 2      ; Revisa si el bit 2 del PORTB está en 0, si vale 0,
 			    ; se salta el goto
 	goto BTN3_E2
-	incf U_MIN, F
+	incf U_MIN, F	    ; Se incrementa en 1 el valor de U_MIN
 	goto ISR_TMR0
 
     BTN3_E2:
@@ -207,36 +215,64 @@ ESTADO3_ISR:
 	btfsc PORTB, 0      ; Revisa si el bit 0 del PORTB está en 0, si vale 0,
 			    ; se salta el goto BTN1_E2
 	goto BTN1_E3
-	incf U_DIA, F	    ; Se incrementa en 1 el valor de U_MES
+	incf U_DIA, F	    ; Se incrementa en 1 el valor de U_DIA
 	goto ISR_TMR0
  
     BTN1_E3:    
 	btfsc PORTB, 1      ; Revisa si el bit 1 del PORTB está en 0, si vale 0,
 			    ; se salta el goto
 	goto BTN2_E3
-	decf U_DIA, F	    ; Se decrementa en 1 el valor de U_HOR
+	decf U_DIA, F	    ; Se decrementa en 1 el valor de U_DIA
 	goto ISR_TMR0
 
     BTN2_E3:
 	btfsc PORTB, 2      ; Revisa si el bit 2 del PORTB está en 0, si vale 0,
 			    ; se salta el goto
 	goto BTN3_E3
-	incf U_MES, F
-	incf MES
+	incf U_MES, F	    ; Se incrementa en 1 el valor de U_MES
+	incf MES	    ; Se incrementa en 1 el valor de MES
 	goto ISR_TMR0
 
     BTN3_E3:
 	btfsc PORTB, 3      ; Revisa si el bit 3 del PORTB está en 0, si vale 0,
 			    ; se salta el goto
 	goto ISR_TMR0
-	decf U_MES, F	    ; Se decrementa en 1 el valor de U_MIN
-	decf MES
+	decf U_MES, F	    ; Se decrementa en 1 el valor de U_MES
+	decf MES	    ; Se decrementa en 1 el valor de MES
 	goto ISR_TMR0
 
 ESTADO4_ISR:
+    
     bcf INTCON, 0	; Baja la bandera que indica una interrupción en 
-                        ; el RBIF
-    goto ISR_TMR0
+			; el RBIF
+    
+    BTN0_E4:			
+	btfsc PORTB, 0      ; Revisa si el bit 0 del PORTB está en 0, si vale 0,
+			    ; se salta el goto BTN1_E2
+	goto BTN1_E2
+	incf U_HOR_ALRM, F  ; Se incrementa en 1 el valor de U_HOR_ALRM
+	goto ISR_TMR0
+ 
+    BTN1_E4:    
+	btfsc PORTB, 1      ; Revisa si el bit 1 del PORTB está en 0, si vale 0,
+			    ; se salta el goto
+	goto BTN2_E2
+	decf U_HOR_ALRM, F  ; Se decrementa en 1 el valor de U_HOR_ALRM
+	goto ISR_TMR0
+
+    BTN2_E4:
+	btfsc PORTB, 2      ; Revisa si el bit 2 del PORTB está en 0, si vale 0,
+			    ; se salta el goto
+	goto BTN3_E2
+	incf U_MIN_ALRM, F  ; Se incrementa en 1 el valor de U_MIN_ALRM
+	goto ISR_TMR0
+
+    BTN3_E4:
+	btfsc PORTB, 3      ; Revisa si el bit 3 del PORTB está en 0, si vale 0,
+			    ; se salta el goto
+	goto ISR_TMR0
+	decf U_MIN_ALRM, F  ; Se decrementa en 1 el valor de U_MIN_ALRM
+	goto ISR_TMR0
     
 ISR_TMR0:
     btfss INTCON, 2	; Revisa la bandera de interrupción de TMR0, si vale 1, 
@@ -309,14 +345,13 @@ MAIN:
     bcf TRISC, 2	; DISP2
     bcf TRISC, 3	; DISP3
     
-    clrf TRISD
-    clrf TRISE		; Se configuran los puertos A, C, D y E como outputs
+    clrf TRISD		; Se configuran los puertos A, C y D como outputs
     
     bsf TRISB, 0
     bsf TRISB, 1	
     bsf TRISB, 2
     bsf TRISB, 3
-    bsf TRISB, 4	; Se configuran RB0, RB1 y RB2 como inputs
+    bsf TRISB, 4	; Se configuran RB0, RB1, RB2, RB3 y RB4 como inputs
     
     BANKSEL WPUB
     
@@ -324,14 +359,13 @@ MAIN:
     bsf WPUB, 1
     bsf WPUB, 2		
     bsf WPUB, 3
-    bsf WPUB, 4		; Habilitando los pull-ups en RB0, RB1 y RB2
+    bsf WPUB, 4		; Habilitando los pull-ups en RB0, RB1, RB2, RB3 y RB4
     
     BANKSEL PORTC
     
     clrf PORTA		; Se limpia PORTA
     clrf PORTC          ; Se limpia PORTC
     clrf PORTD          ; Se limpia PORTD
-    clrf PORTE
     
     clrf U_SEG
     clrf D_SEG
@@ -517,6 +551,8 @@ CHECK_TIEMPO:
     call CHECK_HOR
     call CHECK_DIA
     call CHECK_MES
+    call CHECK_MIN_ALRM
+    call CHECK_HOR_ALRM
     
 CHECK_DISP_E0:
     movf ESTADO, W	; Copia el valor de ESTADO a W
@@ -555,7 +591,7 @@ CHECK_DISP_E4:
     btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
 			; goto VERIFICACION
     goto VERIFICACION
-    goto CHECK_X_E0_E2
+    goto CHECK_X_E4
     
 CHECK_X_E0_E2:
     btfss DISP, 0	; Si el valor del bit 0 de DISP es 1, se salta el
@@ -687,6 +723,73 @@ DISP3_E1_E3:
     PAGESEL TABLA
     call TABLA
     PAGESEL DISP3_E1_E3
+    movwf PORTD		; Se carga W a PORTD
+    clrf DISP		; Limpiamos DISP
+    goto VERIFICACION
+    
+CHECK_X_E4:
+    btfss DISP, 0	; Si el valor del bit 0 de DISP es 1, se salta el
+			; goto CHECK_Y
+    goto CHECK_Y_E4
+    btfss DISP, 1	; Si el valor del bit 1 de DISP es 1, se salta el
+			; goto DISP1
+    goto DISP1_E4	; DISP = 01
+    goto DISP3_E4	; DISP = 11
+    
+CHECK_Y_E4:
+    btfss DISP, 1	; Si el valor del bit 1 de DISP es 1, se salta el
+			; goto DISP1
+    goto DISP0_E4	; DISP = 00
+    goto DISP2_E4	; DISP = 10
+    
+DISP0_E4:
+    bsf TRISC, 0	; Encendemos DISP0
+    bcf TRISC, 1	; Apagamos DISP1
+    bcf TRISC, 2	; Apagamos DISP2
+    bcf TRISC, 3	; Apagamos DISP3
+    movf U_MIN_ALRM, W	; Copia el valor de U_MIN_ALRM a W
+    PAGESEL TABLA
+    call TABLA
+    PAGESEL DISP0_E4
+    movwf PORTD		; Se carga W a PORTD
+    incf DISP, F
+    goto VERIFICACION
+    
+DISP1_E4:
+    bcf TRISC, 0	; Apagamos DISP0
+    bsf TRISC, 1	; Encendemos DISP1
+    bcf TRISC, 2	; Apagamos DISP2
+    bcf TRISC, 3	; Apagamos DISP3
+    movf D_MIN_ALRM, W	; Copia el valor de D_MIN_ALRM a W
+    PAGESEL TABLA
+    call TABLA
+    PAGESEL DISP1_E4
+    movwf PORTD		; Se carga W a PORTD
+    incf DISP, F
+    goto VERIFICACION
+    
+DISP2_E4:
+    bcf TRISC, 0	; Apagamos DISP0
+    bcf TRISC, 1	; Apagamos DISP1
+    bsf TRISC, 2	; Encendemos DISP2
+    bcf TRISC, 3	; Apagamos DISP3
+    movf U_HOR_ALRM, W	; Copia el valor de U_HOR_ALRM a W
+    PAGESEL TABLA
+    call TABLA
+    PAGESEL DISP2_E4
+    movwf PORTD		; Se carga W a PORTD
+    incf DISP, F
+    goto VERIFICACION
+    
+DISP3_E4:
+    bcf TRISC, 0	; Apagamos DISP0
+    bcf TRISC, 1	; Apagamos DISP1
+    bcf TRISC, 2	; Apagamos DISP2
+    bsf TRISC, 3	; Encendemos DISP3
+    movf D_HOR_ALRM, W	; Copia el valor de D_HOR_ALRM a W
+    PAGESEL TABLA
+    call TABLA
+    PAGESEL DISP3_E4
     movwf PORTD		; Se carga W a PORTD
     clrf DISP		; Limpiamos DISP
     goto VERIFICACION
@@ -1175,7 +1278,7 @@ CHECK_DIA:
 
 	INC_U_DIA_SEP2:
 	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 2		; Restamos "2 - W"
+	    sublw 1		; Restamos "2 - W"
 	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
 				; se salta el return
 	    return
@@ -1245,7 +1348,7 @@ CHECK_DIA:
 
 	INC_U_DIA_NOV2:
 	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 2		; Restamos "2 - W"
+	    sublw 1		; Restamos "1 - W"
 	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
 				; se salta el return
 	    return
@@ -1329,6 +1432,60 @@ CHECK_MES:
 	
     INC_D_MES:
 	incf D_MES, F		; Incrementamos en 1 el valor de D_MES
+	return
+	
+CHECK_MIN_ALRM:
+    
+    INC_U_MIN_ALRM:
+	movf U_MIN_ALRM, W	; Movemos el valor de U_MIN_ALRM a W
+	sublw 10	   	; Restamos "10 - W"
+	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+				; se salta el return
+	return
+	clrf U_MIN_ALRM		; Limpiamos U_MIN_ALRM
+
+    INC_D_MIN_ALRM:
+	incf D_MIN_ALRM, F	; Incrementamos en 1 el valor de D_MIN_ALRM
+	movf D_MIN_ALRM, W	; Movemos el valor de D_MIN_ALRM a W
+	sublw 6			; Restamos "6 - W"
+	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+				; se salta el return
+	return
+	clrf D_MIN_ALRM		; Limpiamos D_MIN_ALRM
+	incf U_HOR_ALRM		; Incrementamos en 1 el valor de U_HOR_ALRM
+	call CHECK_HOR_ALRM		
+	return
+	
+CHECK_HOR_ALRM:
+    
+	movf D_HOR_ALRM, W	; Movemos el valor de D_HOR_ALRM a W
+	sublw 2			; Restamos "2 - W"
+	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+				; se salta el INC_U_HOR_ALRM
+	goto INC_U_HOR_ALRM
+	goto INC_U_HOR_2_ALRM
+    
+    INC_U_HOR_ALRM:
+	movf U_HOR_ALRM, W	; Movemos el valor de U_HOR_ALRM a W
+	sublw 10		; Restamos "10 - W"
+	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+				; se salta el return
+	return
+	clrf U_HOR_ALRM		; Limpiamos U_HOR_ALRM
+	goto INC_D_HOR_ALRM
+
+    INC_U_HOR_2_ALRM:
+	movf U_HOR_ALRM, W	; Movemos el valor de U_HOR_ALRM a W
+	sublw 4			; Restamos "4 - W"
+	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+				; se salta el return
+	return
+	clrf U_HOR_ALRM		; Limpiamos U_HOR
+	clrf D_HOR_ALRM		; Limpiamos D_HOR
+	return
+	
+    INC_D_HOR_ALRM:
+	incf D_HOR_ALRM, F	; Incrementamos en 1 el valor de D_HOR_ALRM
 	return
 	
 PSECT CODE, ABS, DELTA=2

@@ -9,15 +9,15 @@
 ### Memory Usage ###
  Intel Hex-file ranges:
   0h - 1h		(dist/default/production\Proyecto1.X.production.hex)
-  8h - CDh		(dist/default/production\Proyecto1.X.production.hex)
+  8h - EBh		(dist/default/production\Proyecto1.X.production.hex)
   200h - 219h		(dist/default/production\Proyecto1.X.production.hex)
-  400h - 99Bh		(dist/default/production\Proyecto1.X.production.hex)
+  400h - A57h		(dist/default/production\Proyecto1.X.production.hex)
   400Eh - 4011h		(dist/default/production\Proyecto1.X.production.hex)
  Unused ranges:
   2h - 7h
-  CEh - 1FFh
+  ECh - 1FFh
   21Ah - 3FFh
-  99Ch - 400Dh
+  A58h - 400Dh
 
 ### Hex Memory Map ###
  Legend:
@@ -38,7 +38,9 @@
 00000090 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 000000A0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 000000B0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
-000000C0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 -- --
+000000C0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+000000D0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+000000E0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 -- -- -- --
 ----------------------------------------------------------
 00000200 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00000210 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 -- -- -- -- -- --
@@ -132,7 +134,19 @@
 00000960 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00000970 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00000980 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
-00000990 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 -- -- -- --
+00000990 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+000009A0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+000009B0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+000009C0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+000009D0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+000009E0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+000009F0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00000A00 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00000A10 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00000A20 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00000A30 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00000A40 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00000A50 | H1 H1 H1 H1 H1 H1 H1 H1 -- -- -- -- -- -- -- --
 ----------------------------------------------------------
 00004000 | -- -- -- -- -- -- -- -- -- -- -- -- -- -- H1 H1
 00004010 | H1 H1 -- -- -- -- -- -- -- -- -- -- -- -- -- --
