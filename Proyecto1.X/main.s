@@ -888,7 +888,7 @@ CHECK_DIA:
 	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
 				; se salta el goto CHECK_FEB
 	goto CHECK_FEB	
-	goto ENERO
+	goto MES_31
 
     CHECK_FEB:    
 	movf MES, W		; Copia el valor de MES a W
@@ -896,7 +896,7 @@ CHECK_DIA:
 	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
 				; se salta el goto CHECK_MAR
 	goto CHECK_MAR
-	goto FEBRERO
+	goto MES_28
 
     CHECK_MAR:
 	movf MES, W		; Copia el valor de MES a W
@@ -904,7 +904,7 @@ CHECK_DIA:
 	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
 				; se salta el goto CHECK_ABR
 	goto CHECK_ABR	
-	goto MARZO
+	goto MES_31
 
     CHECK_ABR:
 	movf MES, W		; Copia el valor de MES a W
@@ -912,7 +912,7 @@ CHECK_DIA:
 	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
 				; se salta el goto CHECK_MAY
 	goto CHECK_MAY	
-	goto ABRIL
+	goto MES_30
 
     CHECK_MAY:    
 	movf MES, W		; Copia el valor de MES a W
@@ -920,7 +920,7 @@ CHECK_DIA:
 	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
 				; se salta el goto CHECK_JUN
 	goto CHECK_JUN
-	goto MAYO
+	goto MES_31
 
     CHECK_JUN:
 	movf MES, W		; Copia el valor de MES a W
@@ -928,7 +928,7 @@ CHECK_DIA:
 	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
 				; se salta el goto CHECK_JUL
 	goto CHECK_JUL	
-	goto JUNIO
+	goto MES_30
 
     CHECK_JUL:
 	movf MES, W		; Copia el valor de MES a W
@@ -936,7 +936,7 @@ CHECK_DIA:
 	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
 				; se salta el goto CHECK_AGO
 	goto CHECK_AGO	
-	goto JULIO
+	goto MES_31
 
     CHECK_AGO:    
 	movf MES, W		; Copia el valor de MES a W
@@ -944,7 +944,7 @@ CHECK_DIA:
 	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
 				; se salta el goto CHECK_SEP
 	goto CHECK_SEP
-	goto AGOSTO
+	goto MES_31
 
     CHECK_SEP:
 	movf MES, W		; Copia el valor de MES a W
@@ -952,7 +952,7 @@ CHECK_DIA:
 	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
 			        ; se salta el goto CHECK_OCT
 	goto CHECK_OCT	
-	goto SEPTIEMBRE
+	goto MES_30
 
     CHECK_OCT:
 	movf MES, W		; Copia el valor de MES a W
@@ -960,7 +960,7 @@ CHECK_DIA:
 	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
 			        ; se salta el goto CHECK_NOV
 	goto CHECK_NOV	
-	goto OCTUBRE
+	goto MES_31
 
     CHECK_NOV:    
 	movf MES, W		; Copia el valor de MES a W
@@ -968,7 +968,7 @@ CHECK_DIA:
 	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
 				; se salta el goto CHECK_DIC
 	goto CHECK_DIC
-	goto NOVIEMBRE
+	goto MES_30
 
     CHECK_DIC:
 	movf MES, W		; Copia el valor de MES a W
@@ -976,27 +976,27 @@ CHECK_DIA:
 	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
 				; se salta el return
 	return	
-	goto DICIEMBRE
-    
-    ENERO:
+	goto MES_31
+	
+    MES_31:
 	
 	movf D_DIA, W		; Movemos el valor de D_DIA a W
 	sublw 3			; Restamos "3 - W"
 	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
 				; se salta el INC_U_DIA_ENE1
-	goto INC_U_DIA_ENE1
-	goto INC_U_DIA_ENE2
+	goto INC_U_DIA_MES_31
+	goto INC_U_DIA_MES_31_2
     
-	INC_U_DIA_ENE1:
+	INC_U_DIA_MES_31:
 	    movf U_DIA, W	; Movemos el valor de U_HOR a W
 	    sublw 10		; Restamos "10 - W"
 	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
 				; se salta el return
 	    return
 	    clrf U_DIA		; Limpiamos U_DIA
-	    goto INC_D_DIA_ENE
+	    goto INC_D_DIA_MES_31
 
-	INC_U_DIA_ENE2:
+	INC_U_DIA_MES_31_2:
 	    movf U_DIA, W	; Movemos el valor de U_DIA a W
 	    sublw 2		; Restamos "2 - W"
 	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
@@ -1009,29 +1009,29 @@ CHECK_DIA:
 	    incf MES		; Incrementamos en 1 el valor de MES
 	    return
 
-	INC_D_DIA_ENE:
+	INC_D_DIA_MES_31:
 	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
 	    return
 	
-    FEBRERO:
+    MES_28:
     
 	movf D_DIA, W		; Movemos el valor de D_DIA a W
 	sublw 2			; Restamos "2 - W"
 	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
 				; se salta el INC_U_DIA_FEB1
-	goto INC_U_DIA_FEB1
-	goto INC_U_DIA_FEB2
+	goto INC_U_DIA_MES_28
+	goto INC_U_DIA_MES_28_2
     
-	INC_U_DIA_FEB1:
+	INC_U_DIA_MES_28:
 	    movf U_DIA, W	; Movemos el valor de U_HOR a W
 	    sublw 10		; Restamos "10 - W"
 	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
 				; se salta el return
 	    return
 	    clrf U_DIA		; Limpiamos U_DIA
-	    goto INC_D_DIA_FEB
+	    goto INC_D_DIA_MES_28
 
-	INC_U_DIA_FEB2:
+	INC_U_DIA_MES_28_2:
 	    movf U_DIA, W	; Movemos el valor de U_DIA a W
 	    sublw 9		; Restamos "9 - W"
 	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
@@ -1044,29 +1044,29 @@ CHECK_DIA:
 	    incf MES		; Incrementamos en 1 el valor de MES
 	    return
 
-	INC_D_DIA_FEB:
+	INC_D_DIA_MES_28:
 	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
 	    return
 	
-    MARZO:
+    MES_30:
 	
 	movf D_DIA, W		; Movemos el valor de D_DIA a W
 	sublw 3			; Restamos "3 - W"
 	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
 				; se salta el INC_U_DIA_MAR1
-	goto INC_U_DIA_MAR1
-	goto INC_U_DIA_MAR2
+	goto INC_U_DIA_MES_30
+	goto INC_U_DIA_MES_30_2
     
-	INC_U_DIA_MAR1:
+	INC_U_DIA_MES_30:
 	    movf U_DIA, W	; Movemos el valor de U_DIA a W
 	    sublw 10		; Restamos "10 - W"
 	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
 				; se salta el return
 	    return
 	    clrf U_DIA		; Limpiamos U_DIA
-	    goto INC_D_DIA_MAR
+	    goto INC_D_DIA_MES_30
 
-	INC_U_DIA_MAR2:
+	INC_U_DIA_MES_30_2:
 	    movf U_DIA, W	; Movemos el valor de U_DIA a W
 	    sublw 2		; Restamos "2 - W"
 	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
@@ -1079,324 +1079,429 @@ CHECK_DIA:
 	    incf MES		; Incrementamos en 1 el valor de MES
 	    return
 
-	INC_D_DIA_MAR:
+	INC_D_DIA_MES_30:
 	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
 	    return
-	
-    ABRIL:
-	
-	movf D_DIA, W		; Movemos el valor de D_DIA a W
-	sublw 3			; Restamos "3 - W"
-	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
-				; se salta el INC_U_DIA_ABR1
-	goto INC_U_DIA_ABR1
-	goto INC_U_DIA_ABR2
     
-	INC_U_DIA_ABR1:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 10		; Restamos "10 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    goto INC_D_DIA_ABR
-
-	INC_U_DIA_ABR2:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 1		; Restamos "1 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
-	    clrf D_DIA		; Limpiamos D_DIA
-	    incf U_MES		; Incrementamos en 1 el valor de U_MES
-	    incf MES		; Incrementamos en 1 el valor de MES
-	    return
-
-	INC_D_DIA_ABR:
-	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
-	    return
-
-    MAYO:
-    
-	movf D_DIA, W		; Movemos el valor de D_DIA a W
-	sublw 3			; Restamos "3 - W"
-	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
-				; se salta el INC_U_DIA_MAY1
-	goto INC_U_DIA_MAY1
-	goto INC_U_DIA_MAY2
-    
-	INC_U_DIA_MAY1:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 10		; Restamos "10 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    goto INC_D_DIA_MAY
-
-	INC_U_DIA_MAY2:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 2		; Restamos "2 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
-	    clrf D_DIA		; Limpiamos D_DIA
-	    incf U_MES		; Incrementamos en 1 el valor de U_MES
-	    incf MES		; Incrementamos en 1 el valor de MES
-	    return
-
-	INC_D_DIA_MAY:
-	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
-	    return
-	
-    JUNIO:
-    
-	movf D_DIA, W		; Movemos el valor de D_DIA a W
-	sublw 3			; Restamos "3 - W"
-	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
-				; se salta el INC_U_DIA_JUN1
-	goto INC_U_DIA_JUN1
-	goto INC_U_DIA_JUN2
-    
-	INC_U_DIA_JUN1:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 10		; Restamos "10 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    goto INC_D_DIA_JUN
-
-	INC_U_DIA_JUN2:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 1		; Restamos "1 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
-	    clrf D_DIA		; Limpiamos D_DIA
-	    incf U_MES		; Incrementamos en 1 el valor de U_MES
-	    incf MES		; Incrementamos en 1 el valor de MES
-	    return
-
-	INC_D_DIA_JUN:
-	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
-	    return
-	
-    JULIO:
-    
-	movf D_DIA, W		; Movemos el valor de D_DIA a W
-	sublw 3			; Restamos "3 - W"
-	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
-				; se salta el INC_U_DIA_JUL1
-	goto INC_U_DIA_JUL1
-	goto INC_U_DIA_JUL2
-    
-	INC_U_DIA_JUL1:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 10		; Restamos "10 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    goto INC_D_DIA_JUL
-
-	INC_U_DIA_JUL2:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 2		; Restamos "2 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
-	    clrf D_DIA		; Limpiamos D_DIA
-	    incf U_MES		; Incrementamos en 1 el valor de U_MES
-	    incf MES		; Incrementamos en 1 el valor de MES
-	    return
-
-	INC_D_DIA_JUL:
-	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
-	    return
-	
-    AGOSTO:
-    
-	movf D_DIA, W		; Movemos el valor de D_DIA a W
-	sublw 3			; Restamos "3 - W"
-	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
-				; se salta el INC_U_DIA_AGO1
-	goto INC_U_DIA_AGO1
-	goto INC_U_DIA_AGO2
-    
-	INC_U_DIA_AGO1:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 10		; Restamos "10 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    goto INC_D_DIA_AGO
-
-	INC_U_DIA_AGO2:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 2		; Restamos "2 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
-	    clrf D_DIA		; Limpiamos D_DIA
-	    incf U_MES		; Incrementamos en 1 el valor de U_MES
-	    incf MES		; Incrementamos en 1 el valor de MES
-	    return
-
-	INC_D_DIA_AGO:
-	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
-	    return
-	
-    SEPTIEMBRE:
-    
-	movf D_DIA, W		; Movemos el valor de D_DIA a W
-	sublw 3			; Restamos "3 - W"
-	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
-				; se salta el INC_U_DIA_SEP1
-	goto INC_U_DIA_SEP1
-	goto INC_U_DIA_SEP2
-    
-	INC_U_DIA_SEP1:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 10		; Restamos "10 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    goto INC_D_DIA_SEP
-
-	INC_U_DIA_SEP2:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 1		; Restamos "2 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
-	    clrf D_DIA		; Limpiamos D_DIA
-	    incf U_MES		; Incrementamos en 1 el valor de U_MES
-	    incf MES		; Incrementamos en 1 el valor de MES
-	    return
-
-	INC_D_DIA_SEP:
-	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
-	    return
-
-    OCTUBRE:
-    
-	movf D_DIA, W		; Movemos el valor de D_DIA a W
-	sublw 3			; Restamos "3 - W"
-	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
-				; se salta el INC_U_DIA_OCT1
-	goto INC_U_DIA_OCT1
-	goto INC_U_DIA_OCT2
-    
-	INC_U_DIA_OCT1:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 10		; Restamos "10 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    goto INC_D_DIA_OCT
-
-	INC_U_DIA_OCT2:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 2		; Restamos "2 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
-	    clrf D_DIA		; Limpiamos D_DIA
-	    incf U_MES		; Incrementamos en 1 el valor de U_MES
-	    incf MES		; Incrementamos en 1 el valor de MES
-	    return
-
-	INC_D_DIA_OCT:
-	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
-	    return
-	
-    NOVIEMBRE:
-    
-	movf D_DIA, W		; Movemos el valor de D_DIA a W
-	sublw 3			; Restamos "3 - W"
-	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
-				; se salta el INC_U_DIA_NOV1
-	goto INC_U_DIA_NOV1
-	goto INC_U_DIA_NOV2
-    
-	INC_U_DIA_NOV1:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 10		; Restamos "10 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    goto INC_D_DIA_NOV
-
-	INC_U_DIA_NOV2:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 1		; Restamos "1 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
-	    clrf D_DIA		; Limpiamos D_DIA
-	    incf U_MES		; Incrementamos en 1 el valor de U_MES
-	    incf MES		; Incrementamos en 1 el valor de MES
-	    return
-
-	INC_D_DIA_NOV:
-	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
-	    return
-
-    DICIEMBRE:
-    
-	movf D_DIA, W		; Movemos el valor de D_DIA a W
-	sublw 3			; Restamos "3 - W"
-	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
-				; se salta el INC_U_DIA_DIC1
-	goto INC_U_DIA_DIC1
-	goto INC_U_DIA_DIC2
-    
-	INC_U_DIA_DIC1:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 10		; Restamos "10 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    goto INC_D_DIA_DIC
-
-	INC_U_DIA_DIC2:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 2		; Restamos "2 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el return
-	    return
-	    clrf U_DIA		; Limpiamos U_DIA
-	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
-	    clrf D_DIA		; Limpiamos D_DIA
-	    incf U_MES		; Incrementamos en 1 el valor de U_MES
-	    incf MES		; Incrementamos en 1 el valor de MES
-	    return
-
-	INC_D_DIA_DIC:
-	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
-	    return
+;    ENERO:
+;	
+;	movf D_DIA, W		; Movemos el valor de D_DIA a W
+;	sublw 3			; Restamos "3 - W"
+;	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el INC_U_DIA_ENE1
+;	goto INC_U_DIA_ENE1
+;	goto INC_U_DIA_ENE2
+;    
+;	INC_U_DIA_ENE1:
+;	    movf U_DIA, W	; Movemos el valor de U_HOR a W
+;	    sublw 10		; Restamos "10 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    goto INC_D_DIA_ENE
+;
+;	INC_U_DIA_ENE2:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 2		; Restamos "2 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
+;	    clrf D_DIA		; Limpiamos D_DIA
+;	    incf U_MES		; Incrementamos en 1 el valor de U_MES
+;	    incf MES		; Incrementamos en 1 el valor de MES
+;	    return
+;
+;	INC_D_DIA_ENE:
+;	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
+;	    return
+;	
+;    FEBRERO:
+;    
+;	movf D_DIA, W		; Movemos el valor de D_DIA a W
+;	sublw 2			; Restamos "2 - W"
+;	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el INC_U_DIA_FEB1
+;	goto INC_U_DIA_FEB1
+;	goto INC_U_DIA_FEB2
+;    
+;	INC_U_DIA_FEB1:
+;	    movf U_DIA, W	; Movemos el valor de U_HOR a W
+;	    sublw 10		; Restamos "10 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    goto INC_D_DIA_FEB
+;
+;	INC_U_DIA_FEB2:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 9		; Restamos "9 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
+;	    clrf D_DIA		; Limpiamos D_DIA
+;	    incf U_MES		; Incrementamos en 1 el valor de U_MES
+;	    incf MES		; Incrementamos en 1 el valor de MES
+;	    return
+;
+;	INC_D_DIA_FEB:
+;	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
+;	    return
+;	
+;    MARZO:
+;	
+;	movf D_DIA, W		; Movemos el valor de D_DIA a W
+;	sublw 3			; Restamos "3 - W"
+;	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el INC_U_DIA_MAR1
+;	goto INC_U_DIA_MAR1
+;	goto INC_U_DIA_MAR2
+;    
+;	INC_U_DIA_MAR1:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 10		; Restamos "10 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    goto INC_D_DIA_MAR
+;
+;	INC_U_DIA_MAR2:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 2		; Restamos "2 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
+;	    clrf D_DIA		; Limpiamos D_DIA
+;	    incf U_MES		; Incrementamos en 1 el valor de U_MES
+;	    incf MES		; Incrementamos en 1 el valor de MES
+;	    return
+;
+;	INC_D_DIA_MAR:
+;	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
+;	    return
+;	
+;    ABRIL:
+;	
+;	movf D_DIA, W		; Movemos el valor de D_DIA a W
+;	sublw 3			; Restamos "3 - W"
+;	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el INC_U_DIA_ABR1
+;	goto INC_U_DIA_ABR1
+;	goto INC_U_DIA_ABR2
+;    
+;	INC_U_DIA_ABR1:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 10		; Restamos "10 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    goto INC_D_DIA_ABR
+;
+;	INC_U_DIA_ABR2:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 1		; Restamos "1 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
+;	    clrf D_DIA		; Limpiamos D_DIA
+;	    incf U_MES		; Incrementamos en 1 el valor de U_MES
+;	    incf MES		; Incrementamos en 1 el valor de MES
+;	    return
+;
+;	INC_D_DIA_ABR:
+;	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
+;	    return
+;
+;    MAYO:
+;    
+;	movf D_DIA, W		; Movemos el valor de D_DIA a W
+;	sublw 3			; Restamos "3 - W"
+;	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el INC_U_DIA_MAY1
+;	goto INC_U_DIA_MAY1
+;	goto INC_U_DIA_MAY2
+;    
+;	INC_U_DIA_MAY1:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 10		; Restamos "10 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    goto INC_D_DIA_MAY
+;
+;	INC_U_DIA_MAY2:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 2		; Restamos "2 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
+;	    clrf D_DIA		; Limpiamos D_DIA
+;	    incf U_MES		; Incrementamos en 1 el valor de U_MES
+;	    incf MES		; Incrementamos en 1 el valor de MES
+;	    return
+;
+;	INC_D_DIA_MAY:
+;	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
+;	    return
+;	
+;    JUNIO:
+;    
+;	movf D_DIA, W		; Movemos el valor de D_DIA a W
+;	sublw 3			; Restamos "3 - W"
+;	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el INC_U_DIA_JUN1
+;	goto INC_U_DIA_JUN1
+;	goto INC_U_DIA_JUN2
+;    
+;	INC_U_DIA_JUN1:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 10		; Restamos "10 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    goto INC_D_DIA_JUN
+;
+;	INC_U_DIA_JUN2:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 1		; Restamos "1 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
+;	    clrf D_DIA		; Limpiamos D_DIA
+;	    incf U_MES		; Incrementamos en 1 el valor de U_MES
+;	    incf MES		; Incrementamos en 1 el valor de MES
+;	    return
+;
+;	INC_D_DIA_JUN:
+;	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
+;	    return
+;	
+;    JULIO:
+;    
+;	movf D_DIA, W		; Movemos el valor de D_DIA a W
+;	sublw 3			; Restamos "3 - W"
+;	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el INC_U_DIA_JUL1
+;	goto INC_U_DIA_JUL1
+;	goto INC_U_DIA_JUL2
+;    
+;	INC_U_DIA_JUL1:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 10		; Restamos "10 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    goto INC_D_DIA_JUL
+;
+;	INC_U_DIA_JUL2:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 2		; Restamos "2 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
+;	    clrf D_DIA		; Limpiamos D_DIA
+;	    incf U_MES		; Incrementamos en 1 el valor de U_MES
+;	    incf MES		; Incrementamos en 1 el valor de MES
+;	    return
+;
+;	INC_D_DIA_JUL:
+;	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
+;	    return
+;	
+;    AGOSTO:
+;    
+;	movf D_DIA, W		; Movemos el valor de D_DIA a W
+;	sublw 3			; Restamos "3 - W"
+;	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el INC_U_DIA_AGO1
+;	goto INC_U_DIA_AGO1
+;	goto INC_U_DIA_AGO2
+;    
+;	INC_U_DIA_AGO1:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 10		; Restamos "10 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    goto INC_D_DIA_AGO
+;
+;	INC_U_DIA_AGO2:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 2		; Restamos "2 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
+;	    clrf D_DIA		; Limpiamos D_DIA
+;	    incf U_MES		; Incrementamos en 1 el valor de U_MES
+;	    incf MES		; Incrementamos en 1 el valor de MES
+;	    return
+;
+;	INC_D_DIA_AGO:
+;	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
+;	    return
+;	
+;    SEPTIEMBRE:
+;    
+;	movf D_DIA, W		; Movemos el valor de D_DIA a W
+;	sublw 3			; Restamos "3 - W"
+;	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el INC_U_DIA_SEP1
+;	goto INC_U_DIA_SEP1
+;	goto INC_U_DIA_SEP2
+;    
+;	INC_U_DIA_SEP1:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 10		; Restamos "10 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    goto INC_D_DIA_SEP
+;
+;	INC_U_DIA_SEP2:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 1		; Restamos "2 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
+;	    clrf D_DIA		; Limpiamos D_DIA
+;	    incf U_MES		; Incrementamos en 1 el valor de U_MES
+;	    incf MES		; Incrementamos en 1 el valor de MES
+;	    return
+;
+;	INC_D_DIA_SEP:
+;	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
+;	    return
+;
+;    OCTUBRE:
+;    
+;	movf D_DIA, W		; Movemos el valor de D_DIA a W
+;	sublw 3			; Restamos "3 - W"
+;	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el INC_U_DIA_OCT1
+;	goto INC_U_DIA_OCT1
+;	goto INC_U_DIA_OCT2
+;    
+;	INC_U_DIA_OCT1:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 10		; Restamos "10 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    goto INC_D_DIA_OCT
+;
+;	INC_U_DIA_OCT2:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 2		; Restamos "2 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
+;	    clrf D_DIA		; Limpiamos D_DIA
+;	    incf U_MES		; Incrementamos en 1 el valor de U_MES
+;	    incf MES		; Incrementamos en 1 el valor de MES
+;	    return
+;
+;	INC_D_DIA_OCT:
+;	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
+;	    return
+;	
+;    NOVIEMBRE:
+;    
+;	movf D_DIA, W		; Movemos el valor de D_DIA a W
+;	sublw 3			; Restamos "3 - W"
+;	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el INC_U_DIA_NOV1
+;	goto INC_U_DIA_NOV1
+;	goto INC_U_DIA_NOV2
+;    
+;	INC_U_DIA_NOV1:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 10		; Restamos "10 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    goto INC_D_DIA_NOV
+;
+;	INC_U_DIA_NOV2:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 1		; Restamos "1 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
+;	    clrf D_DIA		; Limpiamos D_DIA
+;	    incf U_MES		; Incrementamos en 1 el valor de U_MES
+;	    incf MES		; Incrementamos en 1 el valor de MES
+;	    return
+;
+;	INC_D_DIA_NOV:
+;	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
+;	    return
+;
+;    DICIEMBRE:
+;    
+;	movf D_DIA, W		; Movemos el valor de D_DIA a W
+;	sublw 3			; Restamos "3 - W"
+;	btfss STATUS, 2		; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el INC_U_DIA_DIC1
+;	goto INC_U_DIA_DIC1
+;	goto INC_U_DIA_DIC2
+;    
+;	INC_U_DIA_DIC1:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 10		; Restamos "10 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    goto INC_D_DIA_DIC
+;
+;	INC_U_DIA_DIC2:
+;	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+;	    sublw 2		; Restamos "2 - W"
+;	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+;				; se salta el return
+;	    return
+;	    clrf U_DIA		; Limpiamos U_DIA
+;	    incf U_DIA		; Incrementamos en 1 el valor de U_DIA
+;	    clrf D_DIA		; Limpiamos D_DIA
+;	    incf U_MES		; Incrementamos en 1 el valor de U_MES
+;	    incf MES		; Incrementamos en 1 el valor de MES
+;	    return
+;
+;	INC_D_DIA_DIC:
+;	    incf D_DIA, F	; Incrementamos en 1 el valor de D_DIA
+;	    return
 
 CHECK_MES:
     
