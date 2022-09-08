@@ -2671,6 +2671,7 @@ ESTADO3_ISR:
        ; se salta el goto
  goto BTN3_E3
  incf U_MES, F
+ incf MES
  goto ISR_TMR0
 
     BTN3_E3:
@@ -2678,6 +2679,7 @@ ESTADO3_ISR:
        ; se salta el goto
  goto ISR_TMR0
  decf U_MES, F ; Se decrementa en 1 el valor de U_MIN
+ decf MES
  goto ISR_TMR0
 
 ESTADO4_ISR:
@@ -3345,6 +3347,7 @@ CHECK_DIA:
      clrf U_DIA ; Limpiamos U_DIA
      clrf D_DIA ; Limpiamos D_DIA
      incf U_MES ; Incrementamos en 1 el valor de U_MES
+     incf MES ; Incrementamos en 1 el valor de MES
      return
 
  INC_D_DIA_ENE:
@@ -3378,6 +3381,7 @@ CHECK_DIA:
      clrf U_DIA ; Limpiamos U_DIA
      clrf D_DIA ; Limpiamos D_DIA
      incf U_MES ; Incrementamos en 1 el valor de U_MES
+     incf MES ; Incrementamos en 1 el valor de MES
      return
 
  INC_D_DIA_FEB:
@@ -3403,7 +3407,7 @@ CHECK_DIA:
      goto INC_D_DIA_MAR
 
  INC_U_DIA_MAR2:
-     movf U_HOR, W ; Movemos el valor de U_DIA a W
+     movf U_DIA, W ; Movemos el valor de U_DIA a W
      sublw 2 ; Restamos "2 - W"
      btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
     ; se salta el return
@@ -3411,6 +3415,7 @@ CHECK_DIA:
      clrf U_DIA ; Limpiamos U_DIA
      clrf D_DIA ; Limpiamos D_DIA
      incf U_MES ; Incrementamos en 1 el valor de U_MES
+     incf MES ; Incrementamos en 1 el valor de MES
      return
 
  INC_D_DIA_MAR:
@@ -3436,7 +3441,7 @@ CHECK_DIA:
      goto INC_D_DIA_ABR
 
  INC_U_DIA_ABR2:
-     movf U_HOR, W ; Movemos el valor de U_DIA a W
+     movf U_DIA, W ; Movemos el valor de U_DIA a W
      sublw 1 ; Restamos "1 - W"
      btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
     ; se salta el return
@@ -3444,6 +3449,7 @@ CHECK_DIA:
      clrf U_DIA ; Limpiamos U_DIA
      clrf D_DIA ; Limpiamos D_DIA
      incf U_MES ; Incrementamos en 1 el valor de U_MES
+     incf MES ; Incrementamos en 1 el valor de MES
      return
 
  INC_D_DIA_ABR:
@@ -3469,7 +3475,7 @@ CHECK_DIA:
      goto INC_D_DIA_MAY
 
  INC_U_DIA_MAY2:
-     movf U_HOR, W ; Movemos el valor de U_DIA a W
+     movf U_DIA, W ; Movemos el valor de U_DIA a W
      sublw 2 ; Restamos "2 - W"
      btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
     ; se salta el return
@@ -3477,6 +3483,7 @@ CHECK_DIA:
      clrf U_DIA ; Limpiamos U_DIA
      clrf D_DIA ; Limpiamos D_DIA
      incf U_MES ; Incrementamos en 1 el valor de U_MES
+     incf MES ; Incrementamos en 1 el valor de MES
      return
 
  INC_D_DIA_MAY:
@@ -3502,7 +3509,7 @@ CHECK_DIA:
      goto INC_D_DIA_JUN
 
  INC_U_DIA_JUN2:
-     movf U_HOR, W ; Movemos el valor de U_DIA a W
+     movf U_DIA, W ; Movemos el valor de U_DIA a W
      sublw 1 ; Restamos "1 - W"
      btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
     ; se salta el return
@@ -3510,6 +3517,7 @@ CHECK_DIA:
      clrf U_DIA ; Limpiamos U_DIA
      clrf D_DIA ; Limpiamos D_DIA
      incf U_MES ; Incrementamos en 1 el valor de U_MES
+     incf MES ; Incrementamos en 1 el valor de MES
      return
 
  INC_D_DIA_JUN:
@@ -3535,7 +3543,7 @@ CHECK_DIA:
      goto INC_D_DIA_JUL
 
  INC_U_DIA_JUL2:
-     movf U_HOR, W ; Movemos el valor de U_DIA a W
+     movf U_DIA, W ; Movemos el valor de U_DIA a W
      sublw 2 ; Restamos "2 - W"
      btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
     ; se salta el return
@@ -3543,6 +3551,7 @@ CHECK_DIA:
      clrf U_DIA ; Limpiamos U_DIA
      clrf D_DIA ; Limpiamos D_DIA
      incf U_MES ; Incrementamos en 1 el valor de U_MES
+     incf MES ; Incrementamos en 1 el valor de MES
      return
 
  INC_D_DIA_JUL:
@@ -3568,7 +3577,7 @@ CHECK_DIA:
      goto INC_D_DIA_AGO
 
  INC_U_DIA_AGO2:
-     movf U_HOR, W ; Movemos el valor de U_DIA a W
+     movf U_DIA, W ; Movemos el valor de U_DIA a W
      sublw 2 ; Restamos "2 - W"
      btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
     ; se salta el return
@@ -3576,6 +3585,7 @@ CHECK_DIA:
      clrf U_DIA ; Limpiamos U_DIA
      clrf D_DIA ; Limpiamos D_DIA
      incf U_MES ; Incrementamos en 1 el valor de U_MES
+     incf MES ; Incrementamos en 1 el valor de MES
      return
 
  INC_D_DIA_AGO:
@@ -3601,7 +3611,7 @@ CHECK_DIA:
      goto INC_D_DIA_SEP
 
  INC_U_DIA_SEP2:
-     movf U_HOR, W ; Movemos el valor de U_DIA a W
+     movf U_DIA, W ; Movemos el valor de U_DIA a W
      sublw 2 ; Restamos "2 - W"
      btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
     ; se salta el return
@@ -3609,6 +3619,7 @@ CHECK_DIA:
      clrf U_DIA ; Limpiamos U_DIA
      clrf D_DIA ; Limpiamos D_DIA
      incf U_MES ; Incrementamos en 1 el valor de U_MES
+     incf MES ; Incrementamos en 1 el valor de MES
      return
 
  INC_D_DIA_SEP:
@@ -3634,7 +3645,7 @@ CHECK_DIA:
      goto INC_D_DIA_OCT
 
  INC_U_DIA_OCT2:
-     movf U_HOR, W ; Movemos el valor de U_DIA a W
+     movf U_DIA, W ; Movemos el valor de U_DIA a W
      sublw 2 ; Restamos "2 - W"
      btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
     ; se salta el return
@@ -3642,6 +3653,7 @@ CHECK_DIA:
      clrf U_DIA ; Limpiamos U_DIA
      clrf D_DIA ; Limpiamos D_DIA
      incf U_MES ; Incrementamos en 1 el valor de U_MES
+     incf MES ; Incrementamos en 1 el valor de MES
      return
 
  INC_D_DIA_OCT:
@@ -3667,7 +3679,7 @@ CHECK_DIA:
      goto INC_D_DIA_NOV
 
  INC_U_DIA_NOV2:
-     movf U_HOR, W ; Movemos el valor de U_DIA a W
+     movf U_DIA, W ; Movemos el valor de U_DIA a W
      sublw 2 ; Restamos "2 - W"
      btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
     ; se salta el return
@@ -3675,6 +3687,7 @@ CHECK_DIA:
      clrf U_DIA ; Limpiamos U_DIA
      clrf D_DIA ; Limpiamos D_DIA
      incf U_MES ; Incrementamos en 1 el valor de U_MES
+     incf MES ; Incrementamos en 1 el valor de MES
      return
 
  INC_D_DIA_NOV:
@@ -3700,7 +3713,7 @@ CHECK_DIA:
      goto INC_D_DIA_DIC
 
  INC_U_DIA_DIC2:
-     movf U_HOR, W ; Movemos el valor de U_DIA a W
+     movf U_DIA, W ; Movemos el valor de U_DIA a W
      sublw 2 ; Restamos "2 - W"
      btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
     ; se salta el return
@@ -3708,6 +3721,7 @@ CHECK_DIA:
      clrf U_DIA ; Limpiamos U_DIA
      clrf D_DIA ; Limpiamos D_DIA
      incf U_MES ; Incrementamos en 1 el valor de U_MES
+     incf MES ; Incrementamos en 1 el valor de MES
      return
 
  INC_D_DIA_DIC:
@@ -3730,6 +3744,7 @@ CHECK_MES:
     ; se salta el return
  return
  clrf U_MES ; Limpiamos U_MES
+ clrf MES ; Limpiamos MES
  goto INC_D_MES
 
     INC_U_MES_2:
@@ -3738,7 +3753,8 @@ CHECK_MES:
  btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
     ; se salta el return
  return
- clrf U_MES ; Limpiamos U_HOR
+ clrf U_MES ; Limpiamos U_MES
+ clrf MES ; Limpiamos MES
  clrf D_MES ; Limpiamos D_MES
  return
 
