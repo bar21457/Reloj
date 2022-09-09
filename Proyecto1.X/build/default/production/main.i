@@ -2808,8 +2808,37 @@ ESTADO4_ISR:
  btfsc PORTB, 1 ; Revisa si el bit 1 del PORTB está en 0, si vale 0,
        ; se salta el goto
  goto BTN2_E4
- decf U_HOR_ALRM, F ; Se decrementa en 1 el valor de U_HOR_ALRM
- goto ISR_TMR0
+
+ DEC_U_HOR_ALRM:
+     movf U_HOR_ALRM, W ; Movemos el valor de U_HOR_ALRM a W
+     sublw 0 ; Restamos "0 - W"
+     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
+    ; se salta el DEC_U_HOR_CN_ALRM
+     goto DEC_U_HOR_CN_ALRM
+     goto DEC_U_HOR_C00_ALRM
+
+     DEC_U_HOR_C00_ALRM:
+  movf D_HOR_ALRM, W ; Movemos el valor de D_HOR_ALRM a W
+  sublw 0 ; Restamos "0 - W"
+  btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
+        ; se salta el return
+  goto DEC_U_HOR_CX0_ALRM
+  movf 3, W ; Movemos el valor de 3 a W
+  movwf U_HOR_ALRM ; Movemos el valor de W a U_HOR_ALRM
+  movf 2, W ; Movemos el valor de 2 a W
+  movwf D_HOR_ALRM ; Movemos el valor de W a D_HOR_ALRM
+  goto ISR_TMR0
+
+     DEC_U_HOR_CX0_ALRM:
+  movf 9, W ; Movemos el valor de 9 a W
+  movwf U_HOR_ALRM ; Movemos el valor de W a U_HOR_ALRM
+  incf U_HOR_ALRM, F
+  decf D_HOR_ALRM, F ; Se decrementa en 1 el valor de D_HOR
+  goto ISR_TMR0
+
+     DEC_U_HOR_CN_ALRM:
+  decf U_HOR_ALRM, F ; Se decrementa en 1 el valor de U_HOR_ALRM
+  goto ISR_TMR0
 
     BTN2_E4:
  btfsc PORTB, 2 ; Revisa si el bit 2 del PORTB está en 0, si vale 0,
@@ -2822,8 +2851,39 @@ ESTADO4_ISR:
  btfsc PORTB, 3 ; Revisa si el bit 3 del PORTB está en 0, si vale 0,
        ; se salta el goto
  goto ISR_TMR0
- decf U_MIN_ALRM, F ; Se decrementa en 1 el valor de U_MIN_ALRM
- goto ISR_TMR0
+
+ DEC_U_MIN_ALRM:
+     movf U_MIN_ALRM, W ; Movemos el valor de U_MIN_ALRM a W
+     sublw 0 ; Restamos "0 - W"
+     btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
+    ; se salta el DEC_U_HOR_CN_ALRM
+     goto DEC_U_MIN_CN_ALRM
+     goto DEC_U_MIN_C00_ALRM
+
+     DEC_U_MIN_C00_ALRM:
+  movf D_MIN_ALRM, W ; Movemos el valor de D_MIN_ALRM a W
+  sublw 0 ; Restamos "0 - W"
+  btfss STATUS, 2 ; Revisamos que la resta sea 0, si no es 0,
+        ; se salta el return
+  goto DEC_U_MIN_CX0_ALRM
+  movf 9, W ; Movemos el valor de 9 a W
+  movwf U_MIN_ALRM ; Movemos el valor de W a U_MIN_ALRM
+  incf U_MIN_ALRM, F
+  movf 5, W ; Movemos el valor de 5 a W
+  movwf D_MIN_ALRM ; Movemos el valor de W a D_MIN_ALRM
+  incf D_MIN_ALRM, F
+  goto ISR_TMR0
+
+     DEC_U_MIN_CX0_ALRM:
+  movf 9, W ; Movemos el valor de 9 a W
+  movwf U_MIN_ALRM ; Movemos el valor de W a U_MIN_ALRM
+  incf U_MIN_ALRM, F
+  decf D_MIN_ALRM, F ; Se decrementa en 1 el valor de D_MIN_ALRM
+  goto ISR_TMR0
+
+     DEC_U_MIN_CN_ALRM:
+  decf U_MIN_ALRM, F ; Se decrementa en 1 el valor de U_MIN_ALRM
+  goto ISR_TMR0
 
 ISR_TMR0:
     btfss INTCON, 2 ; Revisa la bandera de interrupción de TMR0, si vale 1,
