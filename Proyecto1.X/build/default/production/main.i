@@ -3004,8 +3004,7 @@ MAIN:
     clrf U_SEG_ALRM
     clrf D_SEG_ALRM
     clrf U_MIN_ALRM
-    movf 5, W
-    movwf U_MIN_ALRM
+    incf U_MIN_ALRM ; Incrementamos en 1 el valor de U_MIN_ALRM
     clrf D_MIN_ALRM
     clrf U_HOR_ALRM
     clrf D_HOR_ALRM
