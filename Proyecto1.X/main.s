@@ -76,6 +76,10 @@ D_MES:
     DS 1
 MES:
     DS 1
+U_SEG_ALRM:
+    DS 1
+D_SEG_ALRM:
+    DS 1
 U_MIN_ALRM:
     DS 1
 D_MIN_ALRM:
@@ -83,6 +87,8 @@ D_MIN_ALRM:
 U_HOR_ALRM:
     DS 1
 D_HOR_ALRM:
+    DS 1
+ALRM:
     DS 1
 
 ;******************************************************************************* 
@@ -282,182 +288,9 @@ ESTADO3_ISR:
 	btfsc PORTB, 1      ; Revisa si el bit 1 del PORTB está en 0, si vale 0,
 			    ; se salta el goto
 	goto BTN2_E3
+	decf U_DIA, F
+	goto ISR_TMR0
 	
-	CHECK_DIA_ISR:
-    
-	CHECK_ENE_ISR:
-	    movf MES, W		    ; Copia el valor de MES a W
-	    sublw 1		    ; Restamos "1 - W"
-	    btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
-				    ; se salta el goto CHECK_FEB_ISR
-	    goto CHECK_FEB_ISR	
-	    goto MES_31_ISR
-
-	CHECK_FEB_ISR:    
-	    movf MES, W		    ; Copia el valor de MES a W
-	    sublw 2		    ; Restamos "2 - W"
-	    btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
-				    ; se salta el goto CHECK_MAR_ISR
-	    goto CHECK_MAR_ISR
-	    goto MES_28_ISR
-
-	CHECK_MAR_ISR:
-	    movf MES, W		    ; Copia el valor de MES a W
-	    sublw 3		    ; Restamos "3 - W"
-	    btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
-				    ; se salta el goto CHECK_ABR_ISR
-	    goto CHECK_ABR_ISR	
-	    goto MES_31_ISR
-
-	CHECK_ABR_ISR:
-	    movf MES, W		    ; Copia el valor de MES a W
-	    sublw 4		    ; Restamos "4 - W"
-	    btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
-				    ; se salta el goto CHECK_MAY_ISR
-	    goto CHECK_MAY_ISR	
-	    goto MES_30_ISR
-
-	CHECK_MAY_ISR:    
-	    movf MES, W		    ; Copia el valor de MES a W
-	    sublw 5		    ; Restamos "5 - W"
-	    btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
-				    ; se salta el goto CHECK_JUN_ISR
-	    goto CHECK_JUN_ISR
-	    goto MES_31_ISR
-
-	CHECK_JUN_ISR:
-	    movf MES, W		    ; Copia el valor de MES a W
-	    sublw 6		    ; Restamos "6 - W"
-	    btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
-				    ; se salta el goto CHECK_JUL_ISR
-	    goto CHECK_JUL_ISR	
-	    goto MES_30_ISR
-
-	CHECK_JUL_ISR:
-	    movf MES, W		    ; Copia el valor de MES a W
-	    sublw 7		    ; Restamos "7 - W"
-	    btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
-				    ; se salta el goto CHECK_AGO_ISR
-	    goto CHECK_AGO_ISR	
-	    goto MES_31_ISR
-
-	CHECK_AGO_ISR:    
-	    movf MES, W		    ; Copia el valor de MES a W
-	    sublw 8		    ; Restamos "8 - W"
-	    btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
-				    ; se salta el goto CHECK_SEP_ISR
-	    goto CHECK_SEP_ISR
-	    goto MES_31_ISR
-
-	CHECK_SEP_ISR:
-	    movf MES, W		    ; Copia el valor de MES a W
-	    sublw 9		    ; Restamos "9 - W"
-	    btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
-				    ; se salta el goto CHECK_OCT_ISR
-	    goto CHECK_OCT_ISR	
-	    goto MES_30_ISR
-
-	CHECK_OCT_ISR:
-	    movf MES, W		    ; Copia el valor de MES a W
-	    sublw 10		    ; Restamos "10 - W"
-	    btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
-				    ; se salta el goto CHECK_NOV_ISR
-	    goto CHECK_NOV_ISR	
-	    goto MES_31_ISR
-
-	CHECK_NOV_ISR:    
-	    movf MES, W		    ; Copia el valor de MES a W
-	    sublw 11		    ; Restamos "11 - W"
-	    btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
-				    ; se salta el goto CHECK_DIC_ISR
-	    goto CHECK_DIC_ISR
-	    goto MES_30_ISR
-
-	CHECK_DIC_ISR:
-	    movf MES, W		    ; Copia el valor de MES a W
-	    sublw 12		    ; Restamos "12 - W"
-	    btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
-				    ; se salta el return
-	    return	
-	    goto MES_31_ISR
-
-	MES_31_ISR:
-
-	   DEC_U_DIA_31:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 0		; Restamos "0 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el DEC_U_DIA_CN
-	    goto DEC_U_DIA_CN
-	    goto DEC_U_DIA_C00_31
-    
-	    DEC_U_DIA_C00_31:
-		movf D_DIA, W	    ; Movemos el valor de D_DIA a W
-		sublw 0		    ; Restamos "0 - W"
-		btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
-				    ; se salta el return
-		goto DEC_U_DIA_CX0
-		movf 3, W	    ; Movemos el valor de 3 a W
-		movwf U_DIA	    ; Movemos el valor de W a U_DIA
-		movf 1, W	    ; Movemos el valor de 1 a W
-		movwf D_DIA	    ; Movemos el valor de W a D_DIA
-		goto ISR_TMR0
-
-	MES_28_ISR:
-
-	   DEC_U_DIA_28:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 0		; Restamos "0 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el DEC_U_DIA_CN_28
-	    goto DEC_U_DIA_CN
-	    goto DEC_U_DIA_C00_28
-    
-	    DEC_U_DIA_C00_28:
-		movf D_DIA, W	    ; Movemos el valor de D_DIA a W
-		sublw 0		    ; Restamos "0 - W"
-		btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
-				    ; se salta el return
-		goto DEC_U_DIA_CX0
-		movf 2, W	    ; Movemos el valor de 2 a W
-		movwf U_DIA	    ; Movemos el valor de W a U_DIA
-		movf 8, W	    ; Movemos el valor de 8 a W
-		movwf D_DIA	    ; Movemos el valor de W a D_DIA
-		goto ISR_TMR0
-
-	MES_30_ISR:
-
-	    DEC_U_DIA_30:
-	    movf U_DIA, W	; Movemos el valor de U_DIA a W
-	    sublw 0		; Restamos "0 - W"
-	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
-				; se salta el DEC_U_DIA_CN
-	    goto DEC_U_DIA_CN
-	    goto DEC_U_DIA_C00_30
-    
-	    DEC_U_DIA_C00_30:
-		movf D_DIA, W	    ; Movemos el valor de D_DIA a W
-		sublw 0		    ; Restamos "0 - W"
-		btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
-				    ; se salta el return
-		goto DEC_U_DIA_CX0
-		movf 3, W	    ; Movemos el valor de 3 a W
-		movwf U_DIA	    ; Movemos el valor de W a U_DIA
-		movf 0, W	    ; Movemos el valor de 0 a W
-		movwf D_DIA	    ; Movemos el valor de W a D_DIA
-		goto ISR_TMR0
-	
-	DEC_U_DIA_CX0:
-	    movf 9, W		; Movemos el valor de 9 a W
-	    movwf U_DIA		; Movemos el valor de W a U_DIA
-	    incf U_DIA, F
-	    decf D_DIA, F	; Se decrementa en 1 el valor de D_DIA
-	    goto ISR_TMR0
-	
-	DEC_U_DIA_CN:
-	    decf U_DIA, F	; Se decrementa en 1 el valor de U_DIA
-	    goto ISR_TMR0
-
     BTN2_E3:
 	btfsc PORTB, 2      ; Revisa si el bit 2 del PORTB está en 0, si vale 0,
 			    ; se salta el goto
@@ -538,7 +371,7 @@ ESTADO4_ISR:
 	goto ISR_TMR0
 	decf U_MIN_ALRM, F  ; Se decrementa en 1 el valor de U_MIN_ALRM
 	goto ISR_TMR0
-    
+	
 ISR_TMR0:
     btfss INTCON, 2	; Revisa la bandera de interrupción de TMR0, si vale 1, 
                         ; se salta el goto POP
@@ -548,6 +381,42 @@ ISR_TMR0:
     movlw 240		; Cargamos 240 a W
     movwf TMR0		; Cargamos W a TMR0
     incf CONT_1MS, F	; Incrementamos en 1 el valor de CONT_1MS
+    
+ALARMA:
+    movf U_SEG, W	; Movemos el valor de U_SEG a W
+    sublw U_SEG_ALRM	; Restamos "U_SEG_ALRM - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
+			; se salta el goto ISR_TMR1
+    goto ISR_TMR1	
+    movf D_SEG, W	; Movemos el valor de D_SEG a W
+    sublw D_SEG_ALRM	; Restamos "D_SEG_ALRM - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
+			; se salta el goto ISR_TMR1
+    goto ISR_TMR1	
+    
+    movf U_MIN, W	; Movemos el valor de U_MIN a W
+    sublw U_MIN_ALRM	; Restamos "U_MIN_ALRM - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
+			; se salta el goto ISR_TMR1
+    goto ISR_TMR1	
+    movf D_MIN, W	; Movemos el valor de D_MIN a W
+    sublw D_MIN_ALRM	; Restamos "D_MIN_ALRM - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
+			; se salta el goto ISR_TMR1
+    goto ISR_TMR1	
+    
+    movf U_HOR, W	; Movemos el valor de U_HOR a W
+    sublw U_HOR_ALRM	; Restamos "U_HOR_ALRM - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
+			; se salta el goto ISR_TMR1
+    goto ISR_TMR1	
+    movf D_HOR, W	; Movemos el valor de D_HOR a W
+    sublw D_HOR_ALRM	; Restamos "D_HOR_ALRM - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
+			; se salta el goto ISR_TMR1
+    goto ISR_TMR1	
+    bsf PORTC, 6	; Se enciende el bit 6 del PORTC (LED de alarma)
+    incf ALRM		; Se incrementa en 1 el valor de ALRM
     
 ISR_TMR1:
     btfss PIR1, 0	; Revisa la bandera de interrupción de TMR1, si vale 1, 
