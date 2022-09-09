@@ -347,21 +347,21 @@ ESTADO4_ISR:
     BTN0_E4:			
 	btfsc PORTB, 0      ; Revisa si el bit 0 del PORTB está en 0, si vale 0,
 			    ; se salta el goto BTN1_E2
-	goto BTN1_E2
+	goto BTN1_E4
 	incf U_HOR_ALRM, F  ; Se incrementa en 1 el valor de U_HOR_ALRM
 	goto ISR_TMR0
  
     BTN1_E4:    
 	btfsc PORTB, 1      ; Revisa si el bit 1 del PORTB está en 0, si vale 0,
 			    ; se salta el goto
-	goto BTN2_E2
+	goto BTN2_E4
 	decf U_HOR_ALRM, F  ; Se decrementa en 1 el valor de U_HOR_ALRM
 	goto ISR_TMR0
 
     BTN2_E4:
 	btfsc PORTB, 2      ; Revisa si el bit 2 del PORTB está en 0, si vale 0,
 			    ; se salta el goto
-	goto BTN3_E2
+	goto BTN3_E4
 	incf U_MIN_ALRM, F  ; Se incrementa en 1 el valor de U_MIN_ALRM
 	goto ISR_TMR0
 
