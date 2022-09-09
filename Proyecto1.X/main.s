@@ -309,8 +309,10 @@ ESTADO3_ISR:
 		goto DEC_U_DIA_CX0
 		movf 8, W	    ; Movemos el valor de 2 a W
 		movwf U_DIA	    ; Movemos el valor de W a U_DIA
+		incf U_DIA, F
 		movf 2, W	    ; Movemos el valor de 1 a W
 		movwf D_DIA	    ; Movemos el valor de W a D_DIA
+		incf D_DIA, F
 		goto ISR_TMR0
 
 	    DEC_U_DIA_CX0:
@@ -381,6 +383,16 @@ ESTADO4_ISR:
 	btfsc PORTB, 0      ; Revisa si el bit 0 del PORTB está en 0, si vale 0,
 			    ; se salta el goto BTN1_E2
 	goto BTN1_E4
+	movf ALRM, W	    ; Movemos el valor de ALRM a W
+	sublw 1		    ; Restamos "1 - W"
+	btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
+			    ; se salta el goto BTN0_E4_N
+	goto BTN0_E4_N
+	bcf TRISC, 6	    ; Se apaga el bit 6 del PORTC (LED de alarma)
+	decf ALRM, F	    ; Se decrementa en 1 el valor de ALRM
+	goto ISR_TMR0
+	
+    BTN0_E4_N:			
 	incf U_HOR_ALRM, F  ; Se incrementa en 1 el valor de U_HOR_ALRM
 	goto ISR_TMR0
  
@@ -757,6 +769,7 @@ CHECK_TIEMPO:
     call CHECK_MES
     call CHECK_MIN_ALRM
     call CHECK_HOR_ALRM
+    call ALARMA
     
 CHECK_DISP_E0:
     movf ESTADO, W	; Copia el valor de ESTADO a W
@@ -1010,7 +1023,7 @@ VERIFICACION:
     sublw 500		; Restamos "500 - W"
     btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
 			; goto VERIFICACION
-    goto ALARMA
+    goto LOOP
     clrf CONT_500MS	; Limpiamos CONT_500MS
     movf PNTS, W	; Copia el valor de PNTS a W
     sublw 1		; Restamos "1 - W"
@@ -1023,50 +1036,13 @@ VERIFICACION:
 	bcf TRISC, 4	; Se apaga el bit 4 de PORTC
 	bcf TRISC, 5	; Se apaga el bit 5 de PORTC
 	incf PNTS, F	; Se incrementa en 1 el valor de PNTS
-	goto ALARMA
+	goto LOOP
 	
     PNTS_EN_1:
 	bsf TRISC, 4	; Se enciende el bit 4 de PORTC
 	bsf TRISC, 5	; Se enciende el bit 5 de PORTC
 	decf PNTS, F	; Se decrementa en 1 el valor de PNTS
-	goto ALARMA
-    
-ALARMA:
-    movf U_SEG, W	; Movemos el valor de U_SEG a W
-    sublw U_SEG_ALRM	; Restamos "U_SEG_ALRM - W"
-    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
-			; se salta el goto ISR_TMR1
-    goto ISR_TMR1	
-    movf D_SEG, W	; Movemos el valor de D_SEG a W
-    sublw D_SEG_ALRM	; Restamos "D_SEG_ALRM - W"
-    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
-			; se salta el goto ISR_TMR1
-    goto ISR_TMR1	
-    
-    movf U_MIN, W	; Movemos el valor de U_MIN a W
-    sublw U_MIN_ALRM	; Restamos "U_MIN_ALRM - W"
-    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
-			; se salta el goto ISR_TMR1
-    goto LOOP	
-    movf D_MIN, W	; Movemos el valor de D_MIN a W
-    sublw D_MIN_ALRM	; Restamos "D_MIN_ALRM - W"
-    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
-			; se salta el goto ISR_TMR1
-    goto LOOP	
-    
-    movf U_HOR, W	; Movemos el valor de U_HOR a W
-    sublw U_HOR_ALRM	; Restamos "U_HOR_ALRM - W"
-    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
-			; se salta el goto ISR_TMR1
-    goto LOOP	
-    movf D_HOR, W	; Movemos el valor de D_HOR a W
-    sublw D_HOR_ALRM	; Restamos "D_HOR_ALRM - W"
-    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
-			; se salta el goto ISR_TMR1
-    goto LOOP	
-    bsf TRISC, 6	; Se enciende el bit 6 del PORTC (LED de alarma)
-    incf ALRM		; Se incrementa en 1 el valor de ALRM
-    goto LOOP
+	goto LOOP
     
 CHECK_SEG:
         
@@ -1437,6 +1413,43 @@ CHECK_HOR_ALRM:
     INC_D_HOR_ALRM:
 	incf D_HOR_ALRM, F	; Incrementamos en 1 el valor de D_HOR_ALRM
 	return
+
+ALARMA:
+    movf U_SEG, W	; Movemos el valor de U_SEG a W
+    sublw U_SEG_ALRM	; Restamos "U_SEG_ALRM - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
+			; se salta el return
+    goto ISR_TMR1	
+    movf D_SEG, W	; Movemos el valor de D_SEG a W
+    sublw D_SEG_ALRM	; Restamos "D_SEG_ALRM - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
+			; se salta el return
+    return	
+    
+    movf U_MIN, W	; Movemos el valor de U_MIN a W
+    sublw U_MIN_ALRM	; Restamos "U_MIN_ALRM - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
+			; se salta el return
+    goto LOOP	
+    movf D_MIN, W	; Movemos el valor de D_MIN a W
+    sublw D_MIN_ALRM	; Restamos "D_MIN_ALRM - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
+			; se salta el return
+    return	
+    
+    movf U_HOR, W	; Movemos el valor de U_HOR a W
+    sublw U_HOR_ALRM	; Restamos "U_HOR_ALRM - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
+			; se salta el return
+    return	
+    movf D_HOR, W	; Movemos el valor de D_HOR a W
+    sublw D_HOR_ALRM	; Restamos "D_HOR_ALRM - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
+			; se salta el return
+    goto LOOP	
+    bsf TRISC, 6	; Se enciende el bit 6 del PORTC (LED de alarma)
+    incf ALRM		; Se incrementa en 1 el valor de ALRM
+    return
 	
 PSECT CODE, ABS, DELTA=2
  ORG 0x100
