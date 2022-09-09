@@ -292,8 +292,37 @@ ESTADO3_ISR:
 	btfsc PORTB, 1      ; Revisa si el bit 1 del PORTB está en 0, si vale 0,
 			    ; se salta el goto
 	goto BTN2_E3
-	decf U_DIA, F
-	goto ISR_TMR0
+	
+	DEC_U_DIA:
+	    movf U_DIA, W	; Movemos el valor de U_DIA a W
+	    sublw 0		; Restamos "0 - W"
+	    btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0,
+				; se salta el DEC_U_DIA_CN
+	    goto DEC_U_DIA_CN
+	    goto DEC_U_DIA_C00
+    
+	    DEC_U_DIA_C00:
+		movf D_DIA, W	    ; Movemos el valor de D_DIA a W
+		sublw 0		    ; Restamos "0 - W"
+		btfss STATUS, 2	    ; Revisamos que la resta sea 0, si no es 0,
+				    ; se salta el return
+		goto DEC_U_DIA_CX0
+		movf 8, W	    ; Movemos el valor de 2 a W
+		movwf U_DIA	    ; Movemos el valor de W a U_DIA
+		movf 2, W	    ; Movemos el valor de 1 a W
+		movwf D_DIA	    ; Movemos el valor de W a D_DIA
+		goto ISR_TMR0
+
+	    DEC_U_DIA_CX0:
+		movf 9, W	    ; Movemos el valor de 9 a W
+		movwf U_DIA	    ; Movemos el valor de W a U_DIA
+		incf U_DIA, F
+		decf D_DIA, F	    ; Se decrementa en 1 el valor de D_DIA
+		goto ISR_TMR0
+	
+	    DEC_U_DIA_CN:
+		decf U_DIA, F	    ; Se decrementa en 1 el valor de U_DIA
+		goto ISR_TMR0
 	
     BTN2_E3:
 	btfsc PORTB, 2      ; Revisa si el bit 2 del PORTB está en 0, si vale 0,
@@ -1003,16 +1032,16 @@ VERIFICACION:
 	goto ALARMA
     
 ALARMA:
-;    movf U_SEG, W	; Movemos el valor de U_SEG a W
-;    sublw U_SEG_ALRM	; Restamos "U_SEG_ALRM - W"
-;    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
-;			; se salta el goto ISR_TMR1
-;    goto ISR_TMR1	
-;    movf D_SEG, W	; Movemos el valor de D_SEG a W
-;    sublw D_SEG_ALRM	; Restamos "D_SEG_ALRM - W"
-;    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
-;			; se salta el goto ISR_TMR1
-;    goto ISR_TMR1	
+    movf U_SEG, W	; Movemos el valor de U_SEG a W
+    sublw U_SEG_ALRM	; Restamos "U_SEG_ALRM - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
+			; se salta el goto ISR_TMR1
+    goto ISR_TMR1	
+    movf D_SEG, W	; Movemos el valor de D_SEG a W
+    sublw D_SEG_ALRM	; Restamos "D_SEG_ALRM - W"
+    btfss STATUS, 2	; Revisamos que la resta sea 0, si es 0,
+			; se salta el goto ISR_TMR1
+    goto ISR_TMR1	
     
     movf U_MIN, W	; Movemos el valor de U_MIN a W
     sublw U_MIN_ALRM	; Restamos "U_MIN_ALRM - W"
