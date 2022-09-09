@@ -2927,6 +2927,9 @@ MAIN:
     bcf TRISC, 1 ; DISP1
     bcf TRISC, 2 ; DISP2
     bcf TRISC, 3 ; DISP3
+    bcf TRISC, 4 ; PT0
+    bcf TRISC, 5 ; PT1
+    bcf TRISC, 6 ; ALRM
 
     clrf TRISD ; Se configuran los puertos A, C y D como outputs
 

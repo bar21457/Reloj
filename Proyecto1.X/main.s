@@ -381,7 +381,7 @@ ISR_TMR0:
     movlw 240		; Cargamos 240 a W
     movwf TMR0		; Cargamos W a TMR0
     incf CONT_1MS, F	; Incrementamos en 1 el valor de CONT_1MS
-    
+
 ALARMA:
     movf U_SEG, W	; Movemos el valor de U_SEG a W
     sublw U_SEG_ALRM	; Restamos "U_SEG_ALRM - W"
@@ -416,7 +416,7 @@ ALARMA:
 			; se salta el goto ISR_TMR1
     goto ISR_TMR1	
     bsf PORTC, 6	; Se enciende el bit 6 del PORTC (LED de alarma)
-    incf ALRM		; Se incrementa en 1 el valor de ALRM
+    incf ALRM		; Se incrementa en 1 el valor de ALRM	
     
 ISR_TMR1:
     btfss PIR1, 0	; Revisa la bandera de interrupción de TMR1, si vale 1, 
@@ -478,6 +478,9 @@ MAIN:
     bcf TRISC, 1	; DISP1
     bcf TRISC, 2	; DISP2
     bcf TRISC, 3	; DISP3
+    bcf TRISC, 4	; PT0
+    bcf TRISC, 5	; PT1
+    bcf TRISC, 6	; ALRM
     
     clrf TRISD		; Se configuran los puertos A, C y D como outputs
     
