@@ -1013,7 +1013,7 @@ DISP3_E4:
     
 VERIFICACION:
     movf CONT_1MS, W	; Copia el valor de CONT_1MS a W
-    sublw 10		; Restamos "10 - W"
+    sublw 4		; Restamos "4 - W"
     btfss STATUS, 2	; Revisamos que la resta sea 0, si no es 0, se salta el
 			; goto VERIFICACION
     goto VERIFICACION
